@@ -35,11 +35,16 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Car.cs" />
     <Compile Include="CarColor.cs" />
     <Compile Include="FuelType.cs" />
+    <Compile Include="Garage.cs" />
     <Compile Include="LicenseType.cs" />
+    <Compile Include="Motorcicle.cs" />
     <Compile Include="NumOfDoors.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Truck.cs" />
+    <Compile Include="Vehicle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
