@@ -6,20 +6,28 @@ namespace Ex03.GarageLogic
 {
     public class Vehicle
     {
-        private string m_BrandName;
-        private string m_LicenseNum;
-        private float m_RemainingEnergyPercentage;
-        private List<Tire> m_TireCollection;
-        private string m_OwnerName;
-        private string m_OwnerPhone;
-        private eVehicleStatus m_VehicleStatus = eVehicleStatus.InReparation;
-        private eTypeOfEnergy r_TypeOfEnergy;
+        protected string m_BrandName;
+        protected string m_LicenseNum;
+        protected float m_RemainingEnergyPercentage;
+        protected List<Tire> m_TireCollection;
+        protected int m_NumOfTires;
+        protected string m_OwnerName;
+        protected string m_OwnerPhone;
+        protected eVehicleStatus m_VehicleStatus = eVehicleStatus.InReparation;
+        protected eTypeOfEnergy r_TypeOfEnergy;
+        protected EnergySystem m_EnergySystem;
 
-        private class Tire
+        protected class Tire
         {
             private string m_BrandName;
             private float m_AirPressure;
             private readonly float r_MaxAirPressure;
+
+            public Tire(float i_MaxAirPressure, string i_TireBrandName)
+            {
+                m_AirPressure = i_MaxAirPressure;
+                m_BrandName = i_TireBrandName;
+            }
 
             public float MaxAirPressure
             {
@@ -58,7 +66,12 @@ namespace Ex03.GarageLogic
         {
             private eFuelType m_FuelType;
             private float m_CurrFuelQuantity;
-            private readonly float r_MaxFuelQuantity;
+            private readonly float r_FuelTankVolume;
+
+            public FuelSystem(float i_FuelTankVolume)
+            {
+                r_FuelTankVolume = i_FuelTankVolume;
+            }
             
             public void AddFuel(float i_FuelLitersToAdd, eFuelType i_FuelTypeToAdd)
             {
@@ -66,7 +79,7 @@ namespace Ex03.GarageLogic
                 {
                     throw new ArgumentException();
                 }
-                if (m_CurrFuelQuantity + i_FuelLitersToAdd <= r_MaxFuelQuantity)
+                if (m_CurrFuelQuantity + i_FuelLitersToAdd <= r_FuelTankVolume)
                 {
                     m_CurrFuelQuantity += i_FuelLitersToAdd;
                 }
@@ -81,6 +94,11 @@ namespace Ex03.GarageLogic
         {
             private float m_RemainingBatteryTime;
             private readonly float r_MaxBatteryTime;
+
+            public ElectricSystem(float i_MaxBatteryTime)
+            {
+                r_MaxBatteryTime = i_MaxBatteryTime;
+            }
 
             public void ChargeBattery(float i_BatteryTimeToAdd)
             {

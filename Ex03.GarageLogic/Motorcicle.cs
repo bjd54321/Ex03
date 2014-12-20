@@ -8,5 +8,10 @@ namespace Ex03.GarageLogic
     {
         private eLicenseType m_LicenseType;
         private readonly int r_EngineVolume; // in cm^3
+
+        public Motorcicle(eTypeOfEnergy i_TypeOfEnergy) : base(i_TypeOfEnergy)
+        {
+            m_NumOfTires = 2;
+        }
     }
 }

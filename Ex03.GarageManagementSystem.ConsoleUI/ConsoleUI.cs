@@ -30,7 +30,31 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
         private void performSelectedOption(eMenuOption menuOption)
         {
-            throw new NotImplementedException();
+            switch (menuOption)
+            {
+                case eMenuOption.EnterVehicleToGarage:
+                    enterVehicle();
+                    break;
+                case eMenuOption.ShowVehicleLicenses:
+                    showVehicleLicenses();
+                    break;
+                case eMenuOption.ChangeVehicleStatus:
+                    changeVehicleStatus();
+                    break;
+                case eMenuOption.InflateTires:
+                    inflateTires();
+                    break;
+                case eMenuOption.PutFuel:
+                    break;
+                case eMenuOption.Charge:
+                    break;
+                case eMenuOption.ShowDetailsByLicenceNum:
+                    break;
+                case eMenuOption.Exit:
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void printMenuOptions()

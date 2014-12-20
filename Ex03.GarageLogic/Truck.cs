@@ -9,5 +9,10 @@ namespace Ex03.GarageLogic
         private bool m_CarriesDangerousMaterials;
         private readonly float r_MaxCarryWeight;
         private float m_CarryWeight;
+
+        public Truck() : base(eTypeOfEnergy.Fuel)
+        {
+
+        }
     }
 }
