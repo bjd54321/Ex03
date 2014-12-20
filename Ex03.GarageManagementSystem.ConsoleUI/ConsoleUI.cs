@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Ex03.GarageLogic;
 
 namespace Ex03.GarageManagementSystem.ConsoleUI
 {
@@ -23,7 +24,13 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             {
                 printMenuOptions();
                 menuOption = getMenuOptionFromUser();
+                performSelectedOption(menuOption);
             }while(menuOption != eMenuOption.Exit);
+        }
+
+        private void performSelectedOption(eMenuOption menuOption)
+        {
+            throw new NotImplementedException();
         }
 
         private void printMenuOptions()
@@ -97,6 +104,74 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
 
             Console.WriteLine(menuOptionText);
+        }
+
+        private void showLicenseNumbers()
+        {
+            List<Vehicle> vehiclesList = m_garage.VehiclesList;
+            foreach (Vehicle vehicle in vehiclesList)
+            {
+                Console.WriteLine(vehicle.LicenseNum);
+            }
+        }
+
+        private void showLicenseNumbers(eVehicleStatus i_VehicleStatusToFilterBy)
+        {
+            List<Vehicle> vehiclesList = m_garage.VehiclesList;
+            foreach (Vehicle vehicle in vehiclesList)
+            {
+                if(vehicle.VehicleStatus == i_VehicleStatusToFilterBy)
+                {
+                    Console.WriteLine(vehicle.LicenseNum);
+                }
+            }
+        }
+
+        private void changeVehicleStatus(string i_LicenseNum, eVehicleStatus i_VehicleStatus)
+        {
+            List<Vehicle> vehiclesList = m_garage.VehiclesList;
+            foreach (Vehicle vehicle in vehiclesList)
+            {
+                if(vehicle.LicenseNum == i_LicenseNum)
+                {
+                    vehicle.VehicleStatus = i_VehicleStatus;
+                    break;
+                }
+            }
+        }
+
+        private void inflateTires(string i_LicenseNum)
+        {
+            List<Vehicle> vehiclesList = m_garage.VehiclesList;
+            foreach (Vehicle vehicle in vehiclesList)
+            {
+                if (vehicle.LicenseNum == i_LicenseNum)
+                {
+                    vehicle.inflateTires();
+                    break;
+                }
+            }
+        }
+
+        private void showVehicleDetails(string i_LicenseNum)
+        {
+            List<Vehicle> vehiclesList = m_garage.VehiclesList;
+            foreach (Vehicle vehicle in vehiclesList)
+            {
+                if (vehicle.LicenseNum == i_LicenseNum)
+                {
+                    StringBuilder details = new StringBuilder();
+                    details.Append(
+@"License number: {0}
+Brand name: {1}
+Owner's name: {2}
+Vehicle's status: {3}");
+                    details.Append(vehicle.getTireDetails());
+                    details.Append(vehicle.getAdditionalDetails());
+                    Console.WriteLine("");
+                    break;
+                }
+            }            
         }
     }
 }
