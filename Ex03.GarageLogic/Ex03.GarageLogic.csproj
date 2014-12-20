@@ -35,6 +35,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CarColor.cs" />
+    <Compile Include="FuelType.cs" />
+    <Compile Include="LicenseType.cs" />
+    <Compile Include="NumOfDoors.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
