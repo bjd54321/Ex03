@@ -8,6 +8,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
     {
         static void Main()
         {
+            ConsoleUI console = new ConsoleUI();
             
         }
     }

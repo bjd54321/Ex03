@@ -44,6 +44,7 @@
     <Compile Include="NumOfDoors.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Truck.cs" />
+    <Compile Include="ValueOutOfRangeException.cs" />
     <Compile Include="Vehicle.cs" />
   </ItemGroup>
   <ItemGroup>

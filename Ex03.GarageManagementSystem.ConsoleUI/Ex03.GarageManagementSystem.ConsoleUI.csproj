@@ -38,6 +38,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleUI.cs" />
+    <Compile Include="MenuOptions.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
