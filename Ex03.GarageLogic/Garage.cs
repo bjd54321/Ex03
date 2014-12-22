@@ -6,18 +6,25 @@ namespace Ex03.GarageLogic
 {
     public class Garage
     {
-        List<Vehicle> m_VehiclesList;
+        List<Vehicle> m_FuelVehicles;
+        List<Vehicle> m_ElectricVehicles;
         VehicleBuilder m_VehicleBuilder;
 
         public Garage()
         {
-            m_VehiclesList = new List<Vehicle>();
+            m_FuelVehicles = new List<Vehicle>();
+            m_ElectricVehicles = new List<Vehicle>();
             m_VehicleBuilder = new VehicleBuilder();
         }
 
-        public List<Vehicle> VehiclesList
+        public List<Vehicle> GetFuelVehicles
         {
-            get { return m_VehiclesList; }
+            get { return m_FuelVehicles; }
+        }
+
+        public List<Vehicle> GetElectricVehicles
+        {
+            get { return m_ElectricVehicles;  }
         }
 
         public VehicleBuilder vehicleBuilder
