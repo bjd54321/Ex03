@@ -6,23 +6,24 @@ namespace Ex03.GarageLogic
 {
     public class Garage
     {
-        List<Vehicle> m_FuelVehicles;
-        List<Vehicle> m_ElectricVehicles;
+        // Key is licence number in both 
+        Dictionary<string, Vehicle> m_FuelVehicles;
+        Dictionary<string, Vehicle> m_ElectricVehicles;
         VehicleBuilder m_VehicleBuilder;
 
         public Garage()
         {
-            m_FuelVehicles = new List<Vehicle>();
-            m_ElectricVehicles = new List<Vehicle>();
+            m_FuelVehicles = new Dictionary<string, Vehicle>();
+            m_ElectricVehicles = new Dictionary<string, Vehicle>();
             m_VehicleBuilder = new VehicleBuilder();
         }
 
-        public List<Vehicle> GetFuelVehicles
+        public Dictionary<string, Vehicle> GetFuelVehicles
         {
             get { return m_FuelVehicles; }
         }
 
-        public List<Vehicle> GetElectricVehicles
+        public Dictionary<string, Vehicle> GetElectricVehicles
         {
             get { return m_ElectricVehicles;  }
         }

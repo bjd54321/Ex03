@@ -7,7 +7,7 @@ namespace Ex03.GarageLogic
     class Car : Vehicle
     {
         private eCarColor m_CarColor;
-        private readonly eNumOfDoor r_NumOfDoors;
+        private readonly eNumOfDoors r_NumOfDoors;
         
 
         public Car(string i_TireBrandName)

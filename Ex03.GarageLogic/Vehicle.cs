@@ -57,7 +57,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public class EnergySystem
+        public abstract class EnergySystem
         {
 
         }
