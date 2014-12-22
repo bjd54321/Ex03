@@ -8,6 +8,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
     public class ConsoleUI
     {
         private GarageLogic.Garage m_garage;
+        private GarageLogic.VehicleBuilder m_VehicleBuilder;
         private readonly int r_NumOfMenuOptions = 8;
         private readonly int r_MinOption = 1;
 
@@ -55,6 +56,13 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 default:
                     break;
             }
+        }
+
+        private void enterVehicle()
+        {
+            Vehicle vehicle = m_VehicleBuilder.buildVehicle(VehicleBuilder.eTypeOfVehicle.ElectricCar);
+            m_garage.AddVehicle(vehicle);
+
         }
 
         private void printMenuOptions()

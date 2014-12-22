@@ -119,6 +119,11 @@ namespace Ex03.GarageLogic
             set { m_VehicleStatus = value; }
         }
 
+        public eTypeOfEnergy TypeOfEnergy
+        {
+            get { return r_TypeOfEnergy; }
+        }
+
         public string LicenseNum
         {
             get {return m_LicenseNum;}

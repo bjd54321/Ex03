@@ -32,5 +32,24 @@ namespace Ex03.GarageLogic
         {
             get { return m_VehicleBuilder; }
         }
+
+        public void AddVehicle(Vehicle vehicle)
+        {
+            if (vehicle != null)
+            {
+                if (eTypeOfEnergy.Electric.Equals(vehicle.TypeOfEnergy))
+                {
+                    m_ElectricVehicles.Add(vehicle.LicenseNum, vehicle);
+                }
+                else if (eTypeOfEnergy.Electric.Equals(vehicle.TypeOfEnergy))
+                {
+                    m_FuelVehicles.Add(vehicle.LicenseNum, vehicle);
+                }
+                else
+                {
+                    // Unsupported type
+                }
+            }
+        }
     }
 }
