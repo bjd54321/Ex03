@@ -51,5 +51,20 @@ namespace Ex03.GarageLogic
                 }
             }
         }
+
+        public Vehicle GetVehicle(string licenseNumber)
+        {
+            Vehicle vehicle = null;
+            if (licenseNumber != null)
+            {
+                
+                if (!m_FuelVehicles.TryGetValue(licenseNumber, out vehicle))
+                {
+                    m_ElectricVehicles.TryGetValue(licenseNumber, out vehicle)
+                }
+            }
+
+            return vehicle;
+        }
     }
 }

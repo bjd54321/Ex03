@@ -62,6 +62,13 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
+        private void showDetailsByLicenceNumber()
+        {
+            string licenseNumber = getLicenceNumber();
+
+            m_garage.GetVehicle(licenseNumber);
+        }
+
         private void changeVehicleStatus()
         {
             throw new NotImplementedException();
