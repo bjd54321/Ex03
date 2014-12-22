@@ -12,7 +12,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         InflateTires,
         PutFuel,
         Charge,
-        ShowDetailsByLicenceNum,
+        ShowDetailsByLicenceNumber,
         Exit
     }
 }

@@ -127,6 +127,7 @@ namespace Ex03.GarageLogic
         public string LicenseNum
         {
             get {return m_LicenseNum;}
+            set { m_LicenseNum = value; }
         }
 
 

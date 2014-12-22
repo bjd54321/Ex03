@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Ex03.GarageLogic;
+using VehicleBuilder.eTypeOfVehicle;
 
 namespace Ex03.GarageManagementSystem.ConsoleUI
 {
@@ -46,10 +47,13 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                     inflateTires();
                     break;
                 case eMenuOption.PutFuel:
+                    putFuel();
                     break;
                 case eMenuOption.Charge:
+                    charge();
                     break;
-                case eMenuOption.ShowDetailsByLicenceNum:
+                case eMenuOption.ShowDetailsByLicenceNumber:
+                    showDetailsByLicenceNumber();
                     break;
                 case eMenuOption.Exit:
                     break;
@@ -58,11 +62,28 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
+        private void changeVehicleStatus()
+        {
+            throw new NotImplementedException();
+        }
+
         private void enterVehicle()
         {
-            Vehicle vehicle = m_VehicleBuilder.buildVehicle(VehicleBuilder.eTypeOfVehicle.ElectricCar);
-            m_garage.AddVehicle(vehicle);
+            eTypeOfVehicle typeOfVehicle = getVehicleType();
+            Vehicle vehicle = m_VehicleBuilder.buildVehicle(typeOfVehicle);
 
+            vehicle.LicenseNum = getLicenceNumber();
+            m_garage.AddVehicle(vehicle);
+        }
+
+        private string getLicenceNumber()
+        {
+            throw new NotImplementedException();
+        }
+
+        private eTypeOfVehicle getVehicleType()
+        {
+            throw new NotImplementedException();
         }
 
         private void printMenuOptions()
@@ -125,7 +146,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 case eMenuOption.Charge:
                     menuOptionText.Append("Charge electric vehicle");
                     break;
-                case eMenuOption.ShowDetailsByLicenceNum:
+                case eMenuOption.ShowDetailsByLicenceNumber:
                     menuOptionText.Append("Show vehicle details");
                     break;
                 case eMenuOption.Exit:
