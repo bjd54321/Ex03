@@ -41,7 +41,7 @@ namespace Ex03.GarageLogic
                 {
                     m_ElectricVehicles.Add(vehicle.LicenseNum, vehicle);
                 }
-                else if (eTypeOfEnergy.Electric.Equals(vehicle.TypeOfEnergy))
+                else if (eTypeOfEnergy.Fuel.Equals(vehicle.TypeOfEnergy))
                 {
                     m_FuelVehicles.Add(vehicle.LicenseNum, vehicle);
                 }
