@@ -6,33 +6,26 @@ namespace Ex03.GarageLogic
 {
     public class VehicleBuilder
     {
-        public enum eTypeOfVehicle
-        {
-            FuelCar,
-            ElectricCar,
-            FuelMotorcicle,
-            ElectricMotorcicle,
-            Truck
-        }
+     
 
-        public Vehicle buildVehicle(eTypeOfVehicle i_TypeOfVehicle)
+        public Vehicle buildVehicle(eVehicleType i_TypeOfVehicle)
         {
             Vehicle vehicle = null;
             switch (i_TypeOfVehicle)
             {
-                case eTypeOfVehicle.FuelCar:
+                case eVehicleType.FuelCar:
                     vehicle = new Car(eFuelType.Octan95, 45, "");
                     break;
-                case eTypeOfVehicle.ElectricCar:
+                case eVehicleType.ElectricCar:
                     vehicle = new Car(eTypeOfEnergy.Electric, 2.6f, "");
                     break;
-                case eTypeOfVehicle.FuelMotorcicle:
+                case eVehicleType.FuelMotorcicle:
                     vehicle = new Motorcicle(eTypeOfEnergy.Fuel);
                     break;
-                case eTypeOfVehicle.ElectricMotorcicle:
+                case eVehicleType.ElectricMotorcicle:
                     vehicle = new Motorcicle(eTypeOfEnergy.Electric);
                     break;
-                case eTypeOfVehicle.Truck:
+                case eVehicleType.Truck:
                     vehicle = new Truck();
                     break;
                 default:

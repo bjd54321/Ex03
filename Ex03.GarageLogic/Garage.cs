@@ -89,5 +89,10 @@ namespace Ex03.GarageLogic
         {
             throw new NotImplementedException();
         }
+
+        public void ChangeStatus()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         public ConsoleUI()
         {
             m_garage = new GarageLogic.Garage();
+            m_VehicleBuilder = new VehicleBuilder();
             Run();
         }
 
@@ -120,11 +121,27 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
         private void showVehicleLicenses()
         {
-            write("Please choose status of vehicles");
+            write("Listing all vehicles in the garage:");
 
             printVehicles(m_garage.GetFuelVehicles);
             printVehicles(m_garage.GetElectricVehicles);
+
+            write("Please choose your filter:");
+            printVehicleStatusMenu();
+
             
+        }
+
+        private void printVehicleStatusMenu()
+        {
+            string[] types = Enum.GetNames(typeof(eVehicleStatus));
+            int count = 1;
+            foreach (string type in types)
+            {
+                Console.WriteLine("{0}. {1}", count, type);
+                count++;
+            }
+            Console.WriteLine("{0}. {1}", 0, "All statuses");
         }
 
         private void printVehicles(Dictionary<string, Vehicle> vehicles)
@@ -138,19 +155,23 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             {
                 if (!status.HasValue || status.Equals(entry.Value.VehicleStatus))
                 {
-                    Console.WriteLine("Licence %s status %s", entry.Key, entry.Value.LicenseNum);
+                    Console.WriteLine("Licence {0} is {1}", entry.Key, entry.Value.VehicleStatus);
                 }
             }
         }
 
-        /*
-         * Shortcut for writing to output
-         */
+       /// <summary>
+       /// 
+       /// </summary>
+       /// <param name="message"></param>
         private void write(string message)
         {
             Console.WriteLine(message);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void showDetailsByLicenceNumber()
         {
             string licenseNumber = getLicenceNumber();
@@ -183,26 +204,92 @@ Vehicle's status: {3}", vehicle.LicenseNum, "", "", vehicle.VehicleStatus));
 
         private eVehicleStatus getVehicleStatus()
         {
-            throw new NotImplementedException();
+            bool isGoodInput = false;
+            int status = 0;
+
+            do
+            {
+                System.Console.WriteLine("Please enter desired option ({0}-{1}):", 1, 3);
+                string inputText = System.Console.ReadLine();
+              
+                if (!int.TryParse(inputText, out status) || status < 1 || status > 3)
+                {
+                    System.Console.WriteLine("The input you entered is invalid.");
+                }
+                else
+                {
+                    isGoodInput = true;
+                }
+            } while (!isGoodInput);
+
+            return (eVehicleStatus)status;
         }
 
         private void enterVehicle()
         {
-            VehicleBuilder.eTypeOfVehicle typeOfVehicle = getVehicleType();
+            eVehicleType typeOfVehicle = getVehicleType();
             Vehicle vehicle = m_VehicleBuilder.buildVehicle(typeOfVehicle);
 
             vehicle.LicenseNum = getLicenceNumber();
             m_garage.AddVehicle(vehicle);
+            write("Vehicle was successfuly added");
         }
 
         private string getLicenceNumber()
         {
-            throw new NotImplementedException();
+            bool isGoodInput = false;
+            string licenseNumber = "";
+
+            write("Please enter vehicle license number");
+            do
+            {
+                licenseNumber = Console.ReadLine();
+                if (licenseNumber.Length >= 1)
+                {
+                    isGoodInput = true;
+                }
+                else
+                {
+                    write(String.Format("License number must be at least {0} characters long", 1)); 
+                }
+            } while (!isGoodInput);
+
+            return licenseNumber;
         }
 
-        private VehicleBuilder.eTypeOfVehicle getVehicleType()
+        private eVehicleType getVehicleType()
         {
-            throw new NotImplementedException();
+            bool isGoodInput = false;
+            int vehicleType = 0;
+
+            do
+            {
+                printVehicleTypeMenu();
+                //System.Console.WriteLine("Please enter desired option ({0}-{1}):", 1, 5);
+                string inputText = System.Console.ReadLine();
+
+                if (!int.TryParse(inputText, out vehicleType) || vehicleType < 1 || vehicleType > 5)
+                {
+                    System.Console.WriteLine("The input you entered is invalid.");
+                }
+                else
+                {
+                    isGoodInput = true;
+                }
+            } while (!isGoodInput);
+
+            return (eVehicleType)vehicleType;
+        }
+
+        private void printVehicleTypeMenu()
+        {
+            string[] types = Enum.GetNames(typeof(eVehicleType));
+            int count = 1;
+            foreach (string type in types)
+            {
+                Console.WriteLine("{0}. {1}", count, type);
+                count++;
+            }
         }
 
         private void printMenuOptions()
