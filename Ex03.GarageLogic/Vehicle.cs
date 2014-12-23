@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
         protected string m_BrandName;
         protected string m_LicenseNum;
         protected float m_RemainingEnergyPercentage;
-        protected List<Tire> m_TireCollection;
+        protected List<Tire> m_Tires;
         protected int m_NumOfTires;
         protected string m_OwnerName;
         protected string m_OwnerPhone;
@@ -131,18 +131,18 @@ namespace Ex03.GarageLogic
         }
 
 
-        public void inflateTires()
+        public void InflateTires()
         {
-            foreach (Tire tire in m_TireCollection)
+            foreach (Tire tire in m_Tires)
             {
                 tire.Inflate(tire.MaxAirPressure);
             }
         }
 
-        public string getTireDetails()
+        public string GetTireDetails()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            foreach (Tire tire in m_TireCollection)
+            foreach (Tire tire in m_Tires)
             {
                 stringBuilder.Append("Air pressure: " + tire.AirPressure);
                 stringBuilder.Append("Brand name: " + tire.BrandName);

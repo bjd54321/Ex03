@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Ex03.GarageLogic;
-using VehicleBuilder.eTypeOfVehicle;
 
 namespace Ex03.GarageManagementSystem.ConsoleUI
 {
@@ -60,6 +59,46 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 default:
                     break;
             }
+        }
+
+        private void inflateTires()
+        {   
+            string licenceNumber = getLicenceNumber();
+
+            m_garage.Inflate(licenceNumber);
+        }
+
+        private void showVehicleLicenses()
+        {
+            write("Please choose status of vehicles");
+
+            printVehicles(m_garage.GetFuelVehicles);
+            printVehicles(m_garage.GetElectricVehicles);
+            
+        }
+
+        private void printVehicles(Dictionary<string, Vehicle> vehicles)
+        {
+            printVehicles(vehicles, null);
+        }
+
+        private void printVehicles(Dictionary<string, Vehicle> vehicles, eVehicleStatus? status)
+        {
+            foreach (KeyValuePair<string, Vehicle> entry in vehicles)
+            {
+                if (!status.HasValue || status.Equals(entry.Value.VehicleStatus))
+                {
+                    Console.WriteLine("Licence %s status %s", entry.Key, entry.Value.LicenseNum);
+                }
+            }
+        }
+
+        /*
+         * Shortcut for writing to output
+         */
+        private void write(string message)
+        {
+            Console.WriteLine(message);
         }
 
         private void showDetailsByLicenceNumber()
@@ -207,7 +246,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             {
                 if (vehicle.LicenseNum == i_LicenseNum)
                 {
-                    vehicle.inflateTires();
+                    vehicle.InflateTires();
                     break;
                 }
             }
@@ -226,7 +265,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 Brand name: {1}
 Owner's name: {2}
 Vehicle's status: {3}");
-                    details.Append(vehicle.getTireDetails());
+                    details.Append(vehicle.GetTireDetails());
                     details.Append(vehicle.getAdditionalDetails());
                     Console.WriteLine("");
                     break;

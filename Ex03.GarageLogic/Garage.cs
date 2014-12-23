@@ -57,14 +57,24 @@ namespace Ex03.GarageLogic
             Vehicle vehicle = null;
             if (licenseNumber != null)
             {
-                
+                // Try to find in fuel vehicles
+                // If not, try to find in electric vehicles
                 if (!m_FuelVehicles.TryGetValue(licenseNumber, out vehicle))
                 {
-                    m_ElectricVehicles.TryGetValue(licenseNumber, out vehicle)
+                    m_ElectricVehicles.TryGetValue(licenseNumber, out vehicle);
                 }
             }
 
             return vehicle;
+        }
+
+        public void Inflate(string licenceNumber)
+        {
+            Vehicle vehicle = GetVehicle(licenceNumber);
+            if (vehicle != null)
+            {
+                vehicle.InflateTires();
+            }
         }
     }
 }
