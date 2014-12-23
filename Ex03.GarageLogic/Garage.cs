@@ -76,5 +76,18 @@ namespace Ex03.GarageLogic
                 vehicle.InflateTires();
             }
         }
+
+        public void AddFuel(Vehicle fuelVehicle, float i_FuelLitersToAdd, eFuelType i_FuelTypeToAdd)
+        {
+            if (fuelVehicle.GetEnergySystem().GetType() == typeof(Vehicle.FuelSystem))
+            {
+                ((Vehicle.FuelSystem)fuelVehicle.GetEnergySystem()).AddFuel(i_FuelLitersToAdd, i_FuelTypeToAdd);
+            }
+        }
+
+        public void Charge(Vehicle electricVehicle, float chargeAmount)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

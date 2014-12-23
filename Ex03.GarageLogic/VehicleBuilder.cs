@@ -12,7 +12,7 @@ namespace Ex03.GarageLogic
             ElectricCar,
             FuelMotorcicle,
             ElectricMotorcicle,
-            Truck,
+            Truck
         }
 
         public Vehicle buildVehicle(eTypeOfVehicle i_TypeOfVehicle)

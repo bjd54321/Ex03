@@ -15,7 +15,7 @@ namespace Ex03.GarageLogic
         protected string m_OwnerPhone;
         protected eVehicleStatus m_VehicleStatus = eVehicleStatus.InReparation;
         protected eTypeOfEnergy r_TypeOfEnergy;
-        protected EnergySystem m_EnergySystem;
+        protected GenericEnergySystem m_EnergySystem;
 
         protected class Tire
         {
@@ -57,12 +57,12 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public abstract class EnergySystem
+        public abstract class GenericEnergySystem
         {
 
         }
 
-        public class FuelSystem : EnergySystem
+        public class FuelSystem : GenericEnergySystem
         {
             private eFuelType m_FuelType;
             private float m_CurrFuelQuantity;
@@ -90,7 +90,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public class ElectricSystem : EnergySystem
+        public class ElectricSystem : GenericEnergySystem
         {
             private float m_RemainingBatteryTime;
             private readonly float r_MaxBatteryTime;
@@ -122,6 +122,11 @@ namespace Ex03.GarageLogic
         public eTypeOfEnergy TypeOfEnergy
         {
             get { return r_TypeOfEnergy; }
+        }
+
+        public GenericEnergySystem GetEnergySystem()
+        {
+            return m_EnergySystem;
         }
 
         public string LicenseNum

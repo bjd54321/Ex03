@@ -13,10 +13,10 @@ namespace Ex03.GarageLogic
         public Car(string i_TireBrandName)
         {
             m_NumOfTires = 4;
-            m_TireCollection = new List<Vehicle.Tire>();
+            m_Tires = new List<Vehicle.Tire>();
             for (int i = 0; i < m_NumOfTires; i++)
             {
-                m_TireCollection.Add(new Tire(29, i_TireBrandName));
+                m_Tires.Add(new Tire(29, i_TireBrandName));
             }
         }
         

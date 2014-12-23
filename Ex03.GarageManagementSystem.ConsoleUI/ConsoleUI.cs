@@ -61,6 +61,56 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
+        private void charge()
+        {
+            string licenseNumber = getLicenceNumber();
+            float chargeAmount = getChargeAmount();
+
+            Vehicle electricVehicle = null;
+            if (m_garage.GetElectricVehicles.TryGetValue(licenseNumber, out electricVehicle))
+            {
+                m_garage.Charge(electricVehicle, chargeAmount);
+            }
+            else
+            {
+                write("No fuel vehicle listed for license number " + licenseNumber);
+            }
+        }
+
+        private float getChargeAmount()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void putFuel()
+        {
+            string licenseNumber = getLicenceNumber();
+            eFuelType fuelType = getFuelType();
+            float fuelAmount = getFuelAmount();
+
+            Vehicle fuelVehicle = null;
+            if (m_garage.GetFuelVehicles.TryGetValue(licenseNumber, out fuelVehicle))
+            {
+                m_garage.AddFuel(fuelVehicle, fuelAmount, fuelType);
+            }
+            else
+            {
+                write("No fuel vehicle listed for license number " + licenseNumber);
+            }
+        }
+
+        private float getFuelAmount()
+        {
+            write("Please enter the fuel amount");
+            return 0f;
+        }
+
+        private eFuelType getFuelType()
+        {
+            write("Please enter fuel type");
+            return eFuelType.Octan95;
+        }
+
         private void inflateTires()
         {   
             string licenceNumber = getLicenceNumber();
@@ -105,17 +155,40 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         {
             string licenseNumber = getLicenceNumber();
 
-            m_garage.GetVehicle(licenseNumber);
+            Vehicle vehicle = m_garage.GetVehicle(licenseNumber);
+
+            StringBuilder details = new StringBuilder();
+            details.Append(String.Format(
+@"License number: {0}
+Brand name: {1}
+Owner's name: {2}
+Vehicle's status: {3}", vehicle.LicenseNum, "", "", vehicle.VehicleStatus));
+            details.Append(vehicle.GetTireDetails());
+            details.Append(vehicle.getAdditionalDetails());
+            Console.WriteLine("");
         }
 
         private void changeVehicleStatus()
+        {
+            string licenseNumber = getLicenceNumber();
+            eVehicleStatus status = getVehicleStatus();
+
+            Vehicle vehicle = m_garage.GetVehicle(licenseNumber);
+            
+            if (vehicle != null)
+            {
+                m_garage.ChangeStatus();
+            }
+        }
+
+        private eVehicleStatus getVehicleStatus()
         {
             throw new NotImplementedException();
         }
 
         private void enterVehicle()
         {
-            eTypeOfVehicle typeOfVehicle = getVehicleType();
+            VehicleBuilder.eTypeOfVehicle typeOfVehicle = getVehicleType();
             Vehicle vehicle = m_VehicleBuilder.buildVehicle(typeOfVehicle);
 
             vehicle.LicenseNum = getLicenceNumber();
@@ -127,7 +200,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             throw new NotImplementedException();
         }
 
-        private eTypeOfVehicle getVehicleType()
+        private VehicleBuilder.eTypeOfVehicle getVehicleType()
         {
             throw new NotImplementedException();
         }
@@ -205,72 +278,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             Console.WriteLine(menuOptionText);
         }
 
-        private void showLicenseNumbers()
-        {
-            List<Vehicle> vehiclesList = m_garage.VehiclesList;
-            foreach (Vehicle vehicle in vehiclesList)
-            {
-                Console.WriteLine(vehicle.LicenseNum);
-            }
-        }
+   
 
-        private void showLicenseNumbers(eVehicleStatus i_VehicleStatusToFilterBy)
-        {
-            List<Vehicle> vehiclesList = m_garage.VehiclesList;
-            foreach (Vehicle vehicle in vehiclesList)
-            {
-                if(vehicle.VehicleStatus == i_VehicleStatusToFilterBy)
-                {
-                    Console.WriteLine(vehicle.LicenseNum);
-                }
-            }
-        }
-
-        private void changeVehicleStatus(string i_LicenseNum, eVehicleStatus i_VehicleStatus)
-        {
-            List<Vehicle> vehiclesList = m_garage.VehiclesList;
-            foreach (Vehicle vehicle in vehiclesList)
-            {
-                if(vehicle.LicenseNum == i_LicenseNum)
-                {
-                    vehicle.VehicleStatus = i_VehicleStatus;
-                    break;
-                }
-            }
-        }
-
-        private void inflateTires(string i_LicenseNum)
-        {
-            List<Vehicle> vehiclesList = m_garage.VehiclesList;
-            foreach (Vehicle vehicle in vehiclesList)
-            {
-                if (vehicle.LicenseNum == i_LicenseNum)
-                {
-                    vehicle.InflateTires();
-                    break;
-                }
-            }
-        }
-
-        private void showVehicleDetails(string i_LicenseNum)
-        {
-            List<Vehicle> vehiclesList = m_garage.VehiclesList;
-            foreach (Vehicle vehicle in vehiclesList)
-            {
-                if (vehicle.LicenseNum == i_LicenseNum)
-                {
-                    StringBuilder details = new StringBuilder();
-                    details.Append(
-@"License number: {0}
-Brand name: {1}
-Owner's name: {2}
-Vehicle's status: {3}");
-                    details.Append(vehicle.GetTireDetails());
-                    details.Append(vehicle.getAdditionalDetails());
-                    Console.WriteLine("");
-                    break;
-                }
-            }            
-        }
     }
 }
