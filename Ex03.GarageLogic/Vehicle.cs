@@ -25,6 +25,7 @@ namespace Ex03.GarageLogic
 
             public Tire(float i_MaxAirPressure, string i_TireBrandName)
             {
+                r_MaxAirPressure = i_MaxAirPressure;
                 m_AirPressure = i_MaxAirPressure;
                 m_BrandName = i_TireBrandName;
             }
@@ -140,7 +141,7 @@ namespace Ex03.GarageLogic
         {
             foreach (Tire tire in m_Tires)
             {
-                tire.Inflate(tire.MaxAirPressure);
+                tire.Inflate(tire.MaxAirPressure - tire.AirPressure);
             }
         }
 

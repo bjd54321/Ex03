@@ -16,15 +16,25 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         {
             m_garage = new GarageLogic.Garage();
             m_VehicleBuilder = new VehicleBuilder();
+
+            //DEBUG START
+
+            Vehicle v1 = m_VehicleBuilder.buildVehicle(eVehicleType.FuelCar);
+            v1.LicenseNum = "123";
+
+            m_garage.AddVehicle(v1);
+            //DEBUG END
+
             Run();
         }
 
         public void Run()
         {
+            
             eMenuOption menuOption = eMenuOption.Exit;
             do
             {
-                printMenuOptions();
+                printMainMenuOptions();
                 menuOption = getMenuOptionFromUser();
                 performSelectedOption(menuOption);
             }while(menuOption != eMenuOption.Exit);
@@ -117,31 +127,58 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             string licenceNumber = getLicenceNumber();
 
             m_garage.Inflate(licenceNumber);
+            write("Inflating successful!");
         }
 
         private void showVehicleLicenses()
         {
-            write("Listing all vehicles in the garage:");
+            bool isGoodInput = false;
+            int option;
 
-            printVehicles(m_garage.GetFuelVehicles);
-            printVehicles(m_garage.GetElectricVehicles);
+            do
+            {
+                write("Please choose your filter:");
+                printVehicleStatusMenu();
 
-            write("Please choose your filter:");
-            printVehicleStatusMenu();
+                string optionAsString = Console.ReadLine();
+               
+                if (!int.TryParse(optionAsString, out option) || option < 0 || option > 3)
+                {
+                    System.Console.WriteLine("The input you entered is invalid.");
+                }
+                else
+                {
+                    isGoodInput = true;
+                }
+                
+            } while (!isGoodInput);
 
-            
+            if (option == 0)
+            {
+                write("Listing all vehicles in the garage:");
+
+                printVehicles(m_garage.GetFuelVehicles);
+                printVehicles(m_garage.GetElectricVehicles);
+            }
+            else
+            {
+                write(String.Format("Listing vehicles in status {0}:", Enum.GetName(typeof(eVehicleStatus), option)));
+                printVehicles(m_garage.GetFuelVehicles, (eVehicleStatus)option);
+                printVehicles(m_garage.GetElectricVehicles, (eVehicleStatus)option);
+            }
         }
 
         private void printVehicleStatusMenu()
         {
-            string[] types = Enum.GetNames(typeof(eVehicleStatus));
-            int count = 1;
-            foreach (string type in types)
-            {
-                Console.WriteLine("{0}. {1}", count, type);
-                count++;
-            }
             Console.WriteLine("{0}. {1}", 0, "All statuses");
+            Array types = Enum.GetValues(typeof(eVehicleStatus));
+          
+            foreach (eVehicleStatus type in types)
+            {
+                Console.WriteLine("{0}. {1}", (int)type, Enum.GetName(typeof(eVehicleStatus), type));
+                
+            }
+           
         }
 
         private void printVehicles(Dictionary<string, Vehicle> vehicles)
@@ -198,7 +235,11 @@ Vehicle's status: {3}", vehicle.LicenseNum, "", "", vehicle.VehicleStatus));
             
             if (vehicle != null)
             {
-                m_garage.ChangeStatus();
+                m_garage.ChangeStatus(vehicle, status);
+            }
+            else
+            {
+                write(String.Format("No such vehicle in the garage: {0}", licenseNumber));
             }
         }
 
@@ -232,7 +273,7 @@ Vehicle's status: {3}", vehicle.LicenseNum, "", "", vehicle.VehicleStatus));
 
             vehicle.LicenseNum = getLicenceNumber();
             m_garage.AddVehicle(vehicle);
-            write("Vehicle was successfuly added");
+            write("Vehicle was successfuly added!");
         }
 
         private string getLicenceNumber()
@@ -240,7 +281,7 @@ Vehicle's status: {3}", vehicle.LicenseNum, "", "", vehicle.VehicleStatus));
             bool isGoodInput = false;
             string licenseNumber = "";
 
-            write("Please enter vehicle license number");
+            write("Please enter vehicle license number:");
             do
             {
                 licenseNumber = Console.ReadLine();
@@ -292,7 +333,7 @@ Vehicle's status: {3}", vehicle.LicenseNum, "", "", vehicle.VehicleStatus));
             }
         }
 
-        private void printMenuOptions()
+        private void printMainMenuOptions()
         {
             Console.WriteLine("Please choose action:" + Environment.NewLine);
             for (int i = 1; i <= r_NumOfMenuOptions; i++)

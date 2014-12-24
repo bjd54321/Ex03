@@ -90,7 +90,7 @@ namespace Ex03.GarageLogic
             throw new NotImplementedException();
         }
 
-        public void ChangeStatus()
+        public void ChangeStatus(Vehicle vehicle, eVehicleStatus status)
         {
             throw new NotImplementedException();
         }
