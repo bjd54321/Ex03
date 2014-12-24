@@ -79,17 +79,23 @@ namespace Ex03.GarageLogic
 
         public void AddFuel(Vehicle i_fuelVehicle, float i_FuelLitersToAdd, eFuelType i_FuelTypeToAdd)
         {
-            if (i_fuelVehicle.GetEnergySystem() is Vehicle.FuelSystem)
+            if (i_fuelVehicle != null)
             {
-                (i_fuelVehicle.GetEnergySystem() as Vehicle.FuelSystem).AddFuel(i_FuelLitersToAdd, i_FuelTypeToAdd);
+                if (i_fuelVehicle.GetEnergySystem() is Vehicle.FuelSystem)
+                {
+                    (i_fuelVehicle.GetEnergySystem() as Vehicle.FuelSystem).AddFuel(i_FuelLitersToAdd, i_FuelTypeToAdd);
+                }
             }
         }
 
         public void Charge(Vehicle i_electricVehicle, float i_chargeAmount)
         {
-            if (i_electricVehicle.GetEnergySystem() is Vehicle.ElectricSystem)
+            if (i_electricVehicle != null)
             {
-                (i_electricVehicle.GetEnergySystem() as Vehicle.ElectricSystem).ChargeBattery(i_chargeAmount);
+                if (i_electricVehicle.GetEnergySystem() is Vehicle.ElectricSystem)
+                {
+                    (i_electricVehicle.GetEnergySystem() as Vehicle.ElectricSystem).ChargeBattery(i_chargeAmount);
+                }
             }
         }
 

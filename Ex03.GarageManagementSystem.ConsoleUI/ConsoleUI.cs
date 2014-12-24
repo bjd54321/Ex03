@@ -108,6 +108,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             if (m_garage.GetFuelVehicles.TryGetValue(licenseNumber, out fuelVehicle))
             {
                 m_garage.AddFuel(fuelVehicle, fuelAmount, fuelType);
+                write("Vehicle was successfully fueled!");
             }
             else
             {
@@ -117,14 +118,64 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
         private float getFuelAmount()
         {
-            write("Please enter the fuel amount");
-            return 0f;
+            bool isGoodInput = false;
+            float fuelAmount = 0;
+
+            do
+            {
+                write("Please enter the fuel amount:");
+           
+                string optionAsString = Console.ReadLine();
+
+                if (!float.TryParse(optionAsString, out fuelAmount) || fuelAmount <= 0)
+                {
+                    System.Console.WriteLine("The input you entered is invalid. Fuel amount must be positive.");
+                }
+                else
+                {
+                    isGoodInput = true;
+                }
+
+            } while (!isGoodInput);
+
+            return fuelAmount;
         }
 
         private eFuelType getFuelType()
         {
-            write("Please enter fuel type");
-            return eFuelType.Octan95;
+         
+            bool isGoodInput = false;
+            int option;
+
+            do
+            {
+                write("Please choose fuel type:");
+                printFuelTypeMenu();
+            
+                string optionAsString = Console.ReadLine();
+
+                if (!int.TryParse(optionAsString, out option) || option < 1 || option > 4)
+                {
+                    System.Console.WriteLine("The input you entered is invalid.");
+                }
+                else
+                {
+                    isGoodInput = true;
+                }
+
+            } while (!isGoodInput);
+
+            return (eFuelType)option;
+        }
+
+        private void printFuelTypeMenu()
+        {
+            Array types = Enum.GetValues(typeof(eFuelType));
+
+            foreach (eFuelType type in types)
+            {
+                Console.WriteLine("{0}. {1}", (int)type, Enum.GetName(typeof(eFuelType), type));
+            }
         }
 
         private void inflateTires()
