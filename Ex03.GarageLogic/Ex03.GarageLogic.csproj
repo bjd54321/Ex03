@@ -41,6 +41,7 @@
     <Compile Include="Garage.cs" />
     <Compile Include="LicenseType.cs" />
     <Compile Include="Motorcicle.cs" />
+    <Compile Include="NoSuchVehicleException.cs" />
     <Compile Include="NumOfDoors.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Truck.cs" />

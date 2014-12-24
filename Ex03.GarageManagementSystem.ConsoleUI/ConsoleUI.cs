@@ -39,6 +39,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             {
                 printMainMenuOptions();
                 menuOption = getMenuOptionFromUser();
+
+                Console.Clear();
                 performSelectedOption(menuOption);
             }while(menuOption != eMenuOption.Exit);
         }
@@ -129,8 +131,15 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         {   
             string licenceNumber = getLicenceNumber();
 
-            m_garage.Inflate(licenceNumber);
-            write("Inflating successful!");
+            try
+            {
+                m_garage.Inflate(licenceNumber);
+                write("Inflating successful!");
+            }
+            catch (NoSuchVehicleException e)
+            {
+                write("No such vehicle");
+            }
         }
 
         private void showVehicleLicenses()
@@ -218,15 +227,14 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
             Vehicle vehicle = m_garage.GetVehicle(licenseNumber);
 
-            StringBuilder details = new StringBuilder();
-            details.Append(String.Format(
-@"License number: {0}
-Brand name: {1}
-Owner's name: {2}
-Vehicle's status: {3}", vehicle.LicenseNum, "", "", vehicle.VehicleStatus));
-            details.Append(vehicle.GetTireDetails());
-            details.Append(vehicle.getAdditionalDetails());
-            Console.WriteLine("");
+            if (vehicle != null)
+            {
+                write(vehicle.Print());
+            }
+            else
+            {
+                write("No such vehicle");
+            }
         }
 
         private void changeVehicleStatus()

@@ -31,5 +31,15 @@ namespace Ex03.GarageLogic
             r_TypeOfEnergy = i_TypeOfEnergy;
             m_EnergySystem = new ElectricSystem(i_MaxBatteryTime);
         }
+
+        public override string Print()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(base.Print());
+            sb.Append("Color: ").Append(m_CarColor).Append(Environment.NewLine);
+            sb.Append("Number of doors: ").Append(r_NumOfDoors).Append(Environment.NewLine);
+
+            return sb.ToString();
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    public class Vehicle
+    public abstract class Vehicle
     {
         protected string m_BrandName;
         protected string m_LicenseNum;
@@ -55,6 +55,15 @@ namespace Ex03.GarageLogic
                 {
                     throw new ValueOutOfRangeException(0,r_MaxAirPressure);
                 }                
+            }
+
+            public string Print()
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append("Air pressure: ").Append(m_AirPressure).
+                              Append(" Brand name: ").Append(m_BrandName).Append(Environment.NewLine);
+
+                return stringBuilder.ToString();
             }
         }
 
@@ -150,16 +159,22 @@ namespace Ex03.GarageLogic
             StringBuilder stringBuilder = new StringBuilder();
             foreach (Tire tire in m_Tires)
             {
-                stringBuilder.Append("Air pressure: " + tire.AirPressure);
-                stringBuilder.Append("Brand name: " + tire.BrandName);
+                stringBuilder.Append(tire.Print());
             }
             return stringBuilder.ToString();
         }
 
-        public string getAdditionalDetails()
+        public virtual string Print()
         {
-            // This method should return the fuel status and type of fuel / charge status / other vehicle specific details
-            throw new NotImplementedException();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Brand name: ").Append(m_BrandName).Append(Environment.NewLine).
+               Append("License numbers: ").Append(m_LicenseNum).Append(Environment.NewLine).
+               Append("Owner name: ").Append(m_OwnerName).Append(Environment.NewLine).
+               Append("Owner phone: ").Append(m_OwnerPhone).Append(Environment.NewLine).
+               Append("Status: ").Append(m_VehicleStatus).Append(Environment.NewLine).
+               Append("Tires: ").Append(Environment.NewLine).Append(GetTireDetails()).Append(Environment.NewLine); 
+        
+            return sb.ToString();
         }
     }
 }
