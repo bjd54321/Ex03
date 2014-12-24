@@ -69,7 +69,7 @@ namespace Ex03.GarageLogic
 
         public abstract class GenericEnergySystem
         {
-
+            public abstract string Print();
         }
 
         public class FuelSystem : GenericEnergySystem
@@ -98,6 +98,17 @@ namespace Ex03.GarageLogic
                     throw new ValueOutOfRangeException("Error: You tried to add too much fuel.");
                 }
             }
+
+            public override string Print()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Fuel engine").Append(Environment.NewLine);
+                sb.Append("Fuel type: ").Append(m_FuelType).Append(Environment.NewLine);
+                sb.Append("Current fuel volume: ").Append(m_CurrFuelQuantity).Append(Environment.NewLine);
+                sb.Append("Max fuel volume: ").Append(r_FuelTankVolume).Append(Environment.NewLine);
+
+                return sb.ToString();
+            }
         }
 
         public class ElectricSystem : GenericEnergySystem
@@ -121,6 +132,18 @@ namespace Ex03.GarageLogic
                     throw new ValueOutOfRangeException(0, r_MaxBatteryTime);
                 }
             }
+
+            public override string Print()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Electric engine").Append(Environment.NewLine);
+                sb.Append("Remaining battery time: ").Append(m_RemainingBatteryTime).Append(Environment.NewLine);
+                sb.Append("Max battery time: ").Append(r_MaxBatteryTime).Append(Environment.NewLine);
+
+                return sb.ToString();
+            }
+
+                
         }
 
         public eVehicleStatus VehicleStatus
@@ -172,7 +195,8 @@ namespace Ex03.GarageLogic
                Append("Owner name: ").Append(m_OwnerName).Append(Environment.NewLine).
                Append("Owner phone: ").Append(m_OwnerPhone).Append(Environment.NewLine).
                Append("Status: ").Append(m_VehicleStatus).Append(Environment.NewLine).
-               Append("Tires: ").Append(Environment.NewLine).Append(GetTireDetails()).Append(Environment.NewLine); 
+               Append("Tires: ").Append(Environment.NewLine).Append(GetTireDetails()).Append(Environment.NewLine).
+               Append("Engine: ").Append(Environment.NewLine).Append(m_EnergySystem.Print()).Append(Environment.NewLine); 
         
             return sb.ToString();
         }
