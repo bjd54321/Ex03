@@ -11,6 +11,9 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         private GarageLogic.VehicleBuilder m_VehicleBuilder;
         private readonly int r_NumOfMenuOptions = 8;
         private readonly int r_MinOption = 1;
+        private const int k_MinLicenseLength = 1;
+        private const int k_MinVehicleType = 1;
+        private const int k_MaxVehicleType = 5;
 
         public ConsoleUI()
         {
@@ -229,12 +232,12 @@ Vehicle's status: {3}", vehicle.LicenseNum, "", "", vehicle.VehicleStatus));
         private void changeVehicleStatus()
         {
             string licenseNumber = getLicenceNumber();
-            eVehicleStatus status = getVehicleStatus();
 
             Vehicle vehicle = m_garage.GetVehicle(licenseNumber);
             
             if (vehicle != null)
             {
+                eVehicleStatus status = getVehicleStatus();
                 m_garage.ChangeStatus(vehicle, status);
             }
             else
@@ -268,12 +271,26 @@ Vehicle's status: {3}", vehicle.LicenseNum, "", "", vehicle.VehicleStatus));
 
         private void enterVehicle()
         {
-            eVehicleType typeOfVehicle = getVehicleType();
-            Vehicle vehicle = m_VehicleBuilder.buildVehicle(typeOfVehicle);
 
-            vehicle.LicenseNum = getLicenceNumber();
-            m_garage.AddVehicle(vehicle);
-            write("Vehicle was successfuly added!");
+            string licenseNumber = getLicenceNumber();
+            Vehicle vehicle = m_garage.GetVehicle(licenseNumber);
+
+            // No such vehicle, add it
+            if (vehicle == null)
+            {
+                eVehicleType typeOfVehicle = getVehicleType();
+                vehicle = m_VehicleBuilder.buildVehicle(typeOfVehicle);
+                vehicle.LicenseNum = licenseNumber;
+                m_garage.AddVehicle(vehicle);
+                
+                write("Vehicle was successfuly added!");
+            }
+            // Already exist, change status
+            else
+            {
+                m_garage.ChangeStatus(vehicle, eVehicleStatus.InReparation);
+                write(String.Format("Vehicle status changed to {0}", eVehicleStatus.InReparation));
+            }
         }
 
         private string getLicenceNumber()
@@ -285,13 +302,13 @@ Vehicle's status: {3}", vehicle.LicenseNum, "", "", vehicle.VehicleStatus));
             do
             {
                 licenseNumber = Console.ReadLine();
-                if (licenseNumber.Length >= 1)
+                if (licenseNumber.Length >= k_MinLicenseLength)
                 {
                     isGoodInput = true;
                 }
                 else
                 {
-                    write(String.Format("License number must be at least {0} characters long", 1)); 
+                    write(String.Format("License number must be at least {0} characters long", k_MinLicenseLength)); 
                 }
             } while (!isGoodInput);
 
@@ -309,7 +326,7 @@ Vehicle's status: {3}", vehicle.LicenseNum, "", "", vehicle.VehicleStatus));
                 //System.Console.WriteLine("Please enter desired option ({0}-{1}):", 1, 5);
                 string inputText = System.Console.ReadLine();
 
-                if (!int.TryParse(inputText, out vehicleType) || vehicleType < 1 || vehicleType > 5)
+                if (!int.TryParse(inputText, out vehicleType) || vehicleType < k_MinVehicleType || vehicleType > k_MaxVehicleType)
                 {
                     System.Console.WriteLine("The input you entered is invalid.");
                 }

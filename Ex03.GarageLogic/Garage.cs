@@ -77,22 +77,28 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void AddFuel(Vehicle fuelVehicle, float i_FuelLitersToAdd, eFuelType i_FuelTypeToAdd)
+        public void AddFuel(Vehicle i_fuelVehicle, float i_FuelLitersToAdd, eFuelType i_FuelTypeToAdd)
         {
-            if (fuelVehicle.GetEnergySystem().GetType() == typeof(Vehicle.FuelSystem))
+            if (i_fuelVehicle.GetEnergySystem() is Vehicle.FuelSystem)
             {
-                ((Vehicle.FuelSystem)fuelVehicle.GetEnergySystem()).AddFuel(i_FuelLitersToAdd, i_FuelTypeToAdd);
+                (i_fuelVehicle.GetEnergySystem() as Vehicle.FuelSystem).AddFuel(i_FuelLitersToAdd, i_FuelTypeToAdd);
             }
         }
 
-        public void Charge(Vehicle electricVehicle, float chargeAmount)
+        public void Charge(Vehicle i_electricVehicle, float i_chargeAmount)
         {
-            throw new NotImplementedException();
+            if (i_electricVehicle.GetEnergySystem() is Vehicle.ElectricSystem)
+            {
+                (i_electricVehicle.GetEnergySystem() as Vehicle.ElectricSystem).ChargeBattery(i_chargeAmount);
+            }
         }
 
         public void ChangeStatus(Vehicle vehicle, eVehicleStatus status)
         {
-            throw new NotImplementedException();
+            if (vehicle != null)
+            {
+                vehicle.VehicleStatus = status;
+            }
         }
     }
 }
