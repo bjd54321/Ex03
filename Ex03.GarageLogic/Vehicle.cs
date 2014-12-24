@@ -87,7 +87,8 @@ namespace Ex03.GarageLogic
             {
                 if(i_FuelTypeToAdd != m_FuelType)
                 {
-                    throw new ArgumentException();
+                    throw new ArgumentException(String.Format("Fuel {0} is not compatible with this vehicle, it uses {1}",
+                        i_FuelTypeToAdd, m_FuelType));
                 }
                 if (m_CurrFuelQuantity + i_FuelLitersToAdd <= r_FuelTankVolume)
                 {
