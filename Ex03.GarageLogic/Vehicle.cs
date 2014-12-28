@@ -17,6 +17,23 @@ namespace Ex03.GarageLogic
         protected eTypeOfEnergy r_TypeOfEnergy;
         protected GenericEnergySystem m_EnergySystem;
 
+
+        
+        public string OwnerName
+        {
+            get { return m_OwnerName; }
+            set { m_OwnerName = value; }
+        }
+
+
+
+        public string OwnerPhone
+        {
+            get { return m_OwnerPhone; }
+            set { m_OwnerPhone = value; }
+        }
+        
+
         protected class Tire
         {
             private string m_BrandName;
@@ -45,6 +62,10 @@ namespace Ex03.GarageLogic
                 get { return m_BrandName; }
             }
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="i_AirToAdd"></param>
             public void Inflate(float i_AirToAdd)
             {
                 if (m_AirPressure + i_AirToAdd <= r_MaxAirPressure)
@@ -57,6 +78,10 @@ namespace Ex03.GarageLogic
                 }                
             }
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <returns></returns>
             public string Print()
             {
                 StringBuilder stringBuilder = new StringBuilder();

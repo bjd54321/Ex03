@@ -142,8 +142,15 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             Vehicle fuelVehicle = null;
             if (m_garage.GetFuelVehicles.TryGetValue(licenseNumber, out fuelVehicle))
             {
-                m_garage.AddFuel(fuelVehicle, fuelAmount, fuelType);
-                write("Vehicle was successfully fueled!");
+                try
+                {
+                    m_garage.AddFuel(fuelVehicle, fuelAmount, fuelType);
+                    write("Vehicle was successfully fueled!");
+                }
+                catch (ArgumentException argumentException)
+                {
+                    write(argumentException.ToString());
+                }                
             }
             else
             {
@@ -224,6 +231,9 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void inflateTires()
         {   
             string licenceNumber = getLicenceNumberFromUser();
@@ -239,6 +249,9 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void showVehicleLicenses()
         {
             bool isGoodInput = false;
@@ -394,6 +407,9 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             return (eVehicleStatus)status;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void enterVehicle()
         {
 
