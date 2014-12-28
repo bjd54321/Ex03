@@ -103,8 +103,11 @@ namespace Ex03.GarageLogic
             private float m_CurrFuelQuantity;
             private readonly float r_FuelTankVolume;
 
-            public FuelSystem(float i_FuelTankVolume)
+      
+
+            public FuelSystem(float i_FuelTankVolume, eFuelType i_FuelType)
             {
+                m_FuelType = i_FuelType;
                 r_FuelTankVolume = i_FuelTankVolume;
             }
             
@@ -129,7 +132,7 @@ namespace Ex03.GarageLogic
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("Fuel engine").Append(Environment.NewLine);
-                sb.Append("Fuel type: ").Append(m_FuelType).Append(Environment.NewLine);
+                sb.Append("Fuel type: ").Append(Enum.GetName(typeof(eFuelType), m_FuelType)).Append(Environment.NewLine);
                 sb.Append("Current fuel volume: ").Append(m_CurrFuelQuantity).Append(Environment.NewLine);
                 sb.Append("Max fuel volume: ").Append(r_FuelTankVolume).Append(Environment.NewLine);
 

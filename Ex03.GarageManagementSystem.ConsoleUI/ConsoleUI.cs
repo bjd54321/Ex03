@@ -422,6 +422,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 eVehicleType typeOfVehicle = getVehicleType();
                 vehicle = m_VehicleBuilder.buildVehicle(typeOfVehicle);
                 vehicle.LicenseNum = licenseNumber;
+                vehicle.OwnerName = getOwnerNameFromUser();
+                vehicle.OwnerPhone = getOwnerPhoneFromUser();
                 m_garage.AddVehicle(vehicle);
                 
                 write("Vehicle was successfuly added!");
@@ -432,6 +434,78 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 m_garage.ChangeStatus(vehicle, eVehicleStatus.InReparation);
                 write(String.Format("Vehicle status changed to {0}", eVehicleStatus.InReparation));
             }
+        }
+
+        /// <summary>
+        /// Get name in a naive way
+        /// We only require that the name contains at least two letters
+        /// </summary>
+        /// <returns></returns>
+        private string getOwnerNameFromUser()
+        {
+            bool isValidInput = false;
+            string ownerName = "";
+
+            do
+            {
+                write("Please enter your name: ");
+                ownerName = Console.ReadLine();
+                if (ownerName.Length > 1)
+                {
+                    isValidInput = true;
+                }
+            } while (!isValidInput);
+
+            return ownerName;
+        }
+
+        private string getOwnerPhoneFromUser()
+        {
+            bool isValidInput = false;
+            string ownerPhone = "";
+
+            do
+            {
+                write("Please enter your phone number. Only digits and '-' are allowed");
+                ownerPhone = Console.ReadLine();
+                if (isPhoneValid(ownerPhone))
+                {
+                    isValidInput = true;
+                }
+            } while (!isValidInput);
+
+            return ownerPhone;
+        }
+
+        /// <summary>
+        /// Validates phone without using regex
+        /// No complex validation, eg 1, 123-123 are all valid phones
+        /// </summary>
+        /// <param name="i_OwnerPhone"></param>
+        /// <returns></returns>
+        private bool isPhoneValid(string i_OwnerPhone)
+        {
+            bool isValid = true;
+            char[] ownerPhoneAsCharArray = i_OwnerPhone.ToCharArray();
+            if (i_OwnerPhone.Trim().Replace("-", "").Length == 0)
+            {
+                isValid = false;
+            }
+            else
+            {
+                for (int i = 0; i < i_OwnerPhone.Length; i++)
+                {
+                    if (!Char.IsDigit(ownerPhoneAsCharArray[i])
+                        && ownerPhoneAsCharArray[i] != '=')
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+
+
+            return isValid;
         }
 
         private string getLicenceNumberFromUser()
@@ -466,7 +540,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             int vehicleType = 0;
 
             do
-            {
+            {                
                 printVehicleTypeMenu();
                 string inputText = System.Console.ReadLine();
 
@@ -488,6 +562,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         /// </summary>
         private void printVehicleTypeMenu()
         {
+            write("Please choose vehicle type");
             string[] types = Enum.GetNames(typeof(eVehicleType));
             int count = 1;
             foreach (string type in types)
