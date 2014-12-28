@@ -75,6 +75,10 @@ namespace Ex03.GarageLogic
             {
                 vehicle.InflateTires();
             }
+            else
+            {
+                throw new NoSuchVehicleException(licenceNumber);
+            }
         }
 
         public void AddFuel(Vehicle i_fuelVehicle, float i_FuelLitersToAdd, eFuelType i_FuelTypeToAdd)

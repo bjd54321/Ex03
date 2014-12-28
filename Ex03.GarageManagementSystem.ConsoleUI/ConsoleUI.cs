@@ -8,12 +8,23 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
     public class ConsoleUI
     {
         private GarageLogic.Garage m_garage;
+
         private GarageLogic.VehicleBuilder m_VehicleBuilder;
-        private readonly int r_NumOfMenuOptions = 8;
-        private readonly int r_MinOption = 1;
+
+        private const int k_MinMainMenuOption = 1;
+        private const int r_MaxMainMenuOption = 8;
+        
         private const int k_MinLicenseLength = 1;
+        private const int k_MaxLicenseLength = 10;
+
         private const int k_MinVehicleType = 1;
         private const int k_MaxVehicleType = 5;
+
+        // Indicates vehicles in all statuses
+        private const int k_AllStatuses = 0;
+
+        private const int k_MinVehicleStatus = 0;
+        private const int k_MaxVehicleStatus = 3;
 
         public ConsoleUI()
         {
@@ -42,7 +53,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
                 Console.Clear();
                 performSelectedOption(menuOption);
-            }while(menuOption != eMenuOption.Exit);
+            } while(menuOption != eMenuOption.Exit);
         }
 
         private void performSelectedOption(eMenuOption menuOption)
@@ -79,8 +90,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
         private void charge()
         {
-            string licenseNumber = getLicenceNumber();
-            float chargeAmount = getChargeAmount();
+            string licenseNumber = getLicenceNumberFromUser();
+            float chargeAmount = getChargeAmountFromUser();
 
             Vehicle electricVehicle = null;
             if (m_garage.GetElectricVehicles.TryGetValue(licenseNumber, out electricVehicle))
@@ -93,16 +104,40 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
-        private float getChargeAmount()
+        private float getChargeAmountFromUser()
         {
-            throw new NotImplementedException();
+            bool isGoodInput = false;
+            float chargeAmount = 0;
+
+            do
+            {
+                write("Please enter the amount of charge:");
+
+                string optionAsString = Console.ReadLine();
+
+                if (!float.TryParse(optionAsString, out chargeAmount) || chargeAmount <= 0)
+                {
+                    System.Console.WriteLine("The input you entered is invalid. Charge amount must be positive.");
+                }
+                else
+                {
+                    isGoodInput = true;
+                }
+
+            } while (!isGoodInput);
+
+            return chargeAmount;
         }
 
+
+        /// <summary>
+        /// Allows user to select a vehicle and fuel it
+        /// </summary>
         private void putFuel()
         {
-            string licenseNumber = getLicenceNumber();
-            eFuelType fuelType = getFuelType();
-            float fuelAmount = getFuelAmount();
+            string licenseNumber = getLicenceNumberFromUser();
+            eFuelType fuelType = getFuelTypeFromUser();
+            float fuelAmount = getFuelAmountFromUser();
 
             Vehicle fuelVehicle = null;
             if (m_garage.GetFuelVehicles.TryGetValue(licenseNumber, out fuelVehicle))
@@ -116,7 +151,11 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
-        private float getFuelAmount()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private float getFuelAmountFromUser()
         {
             bool isGoodInput = false;
             float fuelAmount = 0;
@@ -141,7 +180,11 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             return fuelAmount;
         }
 
-        private eFuelType getFuelType()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private eFuelType getFuelTypeFromUser()
         {
          
             bool isGoodInput = false;
@@ -168,6 +211,9 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             return (eFuelType)option;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void printFuelTypeMenu()
         {
             Array types = Enum.GetValues(typeof(eFuelType));
@@ -180,7 +226,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
         private void inflateTires()
         {   
-            string licenceNumber = getLicenceNumber();
+            string licenceNumber = getLicenceNumberFromUser();
 
             try
             {
@@ -201,11 +247,11 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             do
             {
                 write("Please choose your filter:");
-                printVehicleStatusMenu();
+                printVehicleStatusMenu(true);
 
                 string optionAsString = Console.ReadLine();
                
-                if (!int.TryParse(optionAsString, out option) || option < 0 || option > 3)
+                if (!int.TryParse(optionAsString, out option) || option < k_MinVehicleStatus || option > k_MaxVehicleStatus)
                 {
                     System.Console.WriteLine("The input you entered is invalid.");
                 }
@@ -231,24 +277,40 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
-        private void printVehicleStatusMenu()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="i_ShowAllStatuses"></param>
+        private void printVehicleStatusMenu(bool i_ShowAllStatuses)
         {
-            Console.WriteLine("{0}. {1}", 0, "All statuses");
+            if (i_ShowAllStatuses)
+            {
+                Console.WriteLine("{0}. {1}", k_AllStatuses, "All statuses");
+            }
+            
             Array types = Enum.GetValues(typeof(eVehicleStatus));
           
             foreach (eVehicleStatus type in types)
             {
                 Console.WriteLine("{0}. {1}", (int)type, Enum.GetName(typeof(eVehicleStatus), type));
                 
-            }
-           
+            }           
         }
 
+        /// <summary>
+        /// Overload for printing vehicles in all statuses
+        /// </summary>
+        /// <param name="vehicles"></param>
         private void printVehicles(Dictionary<string, Vehicle> vehicles)
         {
             printVehicles(vehicles, null);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vehicles"></param>
+        /// <param name="status"></param>
         private void printVehicles(Dictionary<string, Vehicle> vehicles, eVehicleStatus? status)
         {
             foreach (KeyValuePair<string, Vehicle> entry in vehicles)
@@ -261,7 +323,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         }
 
        /// <summary>
-       /// 
+       /// Helper for printing a simple message to user
        /// </summary>
        /// <param name="message"></param>
         private void write(string message)
@@ -274,7 +336,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         /// </summary>
         private void showDetailsByLicenceNumber()
         {
-            string licenseNumber = getLicenceNumber();
+            string licenseNumber = getLicenceNumberFromUser();
 
             Vehicle vehicle = m_garage.GetVehicle(licenseNumber);
 
@@ -288,15 +350,19 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void changeVehicleStatus()
         {
-            string licenseNumber = getLicenceNumber();
+            string licenseNumber = getLicenceNumberFromUser();
 
             Vehicle vehicle = m_garage.GetVehicle(licenseNumber);
             
             if (vehicle != null)
             {
-                eVehicleStatus status = getVehicleStatus();
+                printVehicleStatusMenu(false);
+                eVehicleStatus status = getVehicleStatusFromUser();
                 m_garage.ChangeStatus(vehicle, status);
             }
             else
@@ -305,7 +371,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
-        private eVehicleStatus getVehicleStatus()
+        private eVehicleStatus getVehicleStatusFromUser()
         {
             bool isGoodInput = false;
             int status = 0;
@@ -331,7 +397,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         private void enterVehicle()
         {
 
-            string licenseNumber = getLicenceNumber();
+            string licenseNumber = getLicenceNumberFromUser();
             Vehicle vehicle = m_garage.GetVehicle(licenseNumber);
 
             // No such vehicle, add it
@@ -352,7 +418,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
-        private string getLicenceNumber()
+        private string getLicenceNumberFromUser()
         {
             bool isGoodInput = false;
             string licenseNumber = "";
@@ -374,6 +440,10 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             return licenseNumber;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private eVehicleType getVehicleType()
         {
             bool isGoodInput = false;
@@ -382,7 +452,6 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             do
             {
                 printVehicleTypeMenu();
-                //System.Console.WriteLine("Please enter desired option ({0}-{1}):", 1, 5);
                 string inputText = System.Console.ReadLine();
 
                 if (!int.TryParse(inputText, out vehicleType) || vehicleType < k_MinVehicleType || vehicleType > k_MaxVehicleType)
@@ -398,6 +467,9 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             return (eVehicleType)vehicleType;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void printVehicleTypeMenu()
         {
             string[] types = Enum.GetNames(typeof(eVehicleType));
@@ -412,7 +484,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         private void printMainMenuOptions()
         {
             Console.WriteLine("Please choose action:" + Environment.NewLine);
-            for (int i = 1; i <= r_NumOfMenuOptions; i++)
+            for (int i = 1; i <= r_MaxMainMenuOption; i++)
             {
                 printMenuOption((eMenuOption)i);
             }            
@@ -426,10 +498,10 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
             do
             {
-                System.Console.WriteLine("Please enter desired option ({0}-{1}):", r_MinOption, r_NumOfMenuOptions);
+                System.Console.WriteLine("Please enter desired option ({0}-{1}):", k_MinMainMenuOption, r_MaxMainMenuOption);
                 string inputText = System.Console.ReadLine();
                 numberIsInt = int.TryParse(inputText, out menuOption);
-                if (!numberIsInt || menuOption < r_MinOption || menuOption > r_NumOfMenuOptions)
+                if (!numberIsInt || menuOption < k_MinMainMenuOption || menuOption > r_MaxMainMenuOption)
                 {
                     System.Console.WriteLine("The input you entered is invalid.");
                 }
@@ -480,9 +552,6 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
 
             Console.WriteLine(menuOptionText);
-        }
-
-   
-
+        }  
     }
 }

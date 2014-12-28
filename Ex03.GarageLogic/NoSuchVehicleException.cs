@@ -10,7 +10,12 @@ namespace Ex03.GarageLogic
 
         public NoSuchVehicleException(string i_Message, string i_LicenseNumber) : base(i_Message)
         {
-            m_LicenseNumber = i_LicenseNumber;
+            this.m_LicenseNumber = i_LicenseNumber;
+        }
+
+        public NoSuchVehicleException(string i_LicenceNumber) : base ("No such vehicle")
+        {
+            this.m_LicenseNumber = i_LicenceNumber;
         }
     }
 }
