@@ -7,7 +7,7 @@ namespace Ex03.GarageLogic
     class Car : Vehicle
     {
         private eCarColor m_CarColor;
-        private eNumOfDoors m_NumOfDoors = 4;
+        private eNumOfDoors m_NumOfDoors = eNumOfDoors.Four;
 
 
 
