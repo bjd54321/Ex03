@@ -110,5 +110,10 @@ namespace Ex03.GarageLogic
                 vehicle.VehicleStatus = status;
             }
         }
+
+        public string[] getVehicleTypesAsStrings()
+        {
+            return m_VehicleBuilder.getVehicleTypesAsStrings();
+        }
     }
 }

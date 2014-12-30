@@ -42,5 +42,16 @@ namespace Ex03.GarageLogic
             ElectricMotorcicle,
             Truck
         }
+
+        internal string[] getVehicleTypesAsStrings()
+        {
+            string[] types = new string[5];
+            types[0] = "Fuel car";
+            types[1] = "Electric car";
+            types[2] = "Fuel motorcicle";
+            types[3] = "Electric motorcicle";
+            types[4] = "Truck";
+            return types;
+        }
     }
 }

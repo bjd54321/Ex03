@@ -7,7 +7,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 {
     public class ConsoleUI
     {
-        private GarageLogic.Garage m_garage;
+        private GarageLogic.Garage m_Garage;
 
         private GarageLogic.VehicleBuilder m_VehicleBuilder;
 
@@ -28,7 +28,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
         public ConsoleUI()
         {
-            m_garage = new GarageLogic.Garage();
+            m_Garage = new GarageLogic.Garage();
             m_VehicleBuilder = new VehicleBuilder();
 
             //DEBUG START
@@ -36,7 +36,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             Vehicle v1 = m_VehicleBuilder.buildVehicle(VehicleBuilder.eVehicleType.FuelCar);
             v1.LicenseNum = "123";
 
-            m_garage.AddVehicle(v1);
+            m_Garage.AddVehicle(v1);
             //DEBUG END
 
             Run();
@@ -94,9 +94,9 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             float chargeAmount = getChargeAmountFromUser();
 
             Vehicle electricVehicle = null;
-            if (m_garage.GetElectricVehicles.TryGetValue(licenseNumber, out electricVehicle))
+            if (m_Garage.GetElectricVehicles.TryGetValue(licenseNumber, out electricVehicle))
             {
-                m_garage.Charge(electricVehicle, chargeAmount);
+                m_Garage.Charge(electricVehicle, chargeAmount);
             }
             else
             {
@@ -140,11 +140,11 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             float fuelAmount = getFuelAmountFromUser();
 
             Vehicle fuelVehicle = null;
-            if (m_garage.GetFuelVehicles.TryGetValue(licenseNumber, out fuelVehicle))
+            if (m_Garage.GetFuelVehicles.TryGetValue(licenseNumber, out fuelVehicle))
             {
                 try
                 {
-                    m_garage.AddFuel(fuelVehicle, fuelAmount, fuelType);
+                    m_Garage.AddFuel(fuelVehicle, fuelAmount, fuelType);
                     write("Vehicle was successfully fueled!");
                 }
                 catch (ArgumentException argumentException)
@@ -240,7 +240,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
             try
             {
-                m_garage.Inflate(licenceNumber);
+                m_Garage.Inflate(licenceNumber);
                 write("Inflating successful!");
             }
             catch (NoSuchVehicleException e)
@@ -279,14 +279,14 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             {
                 write("Listing all vehicles in the garage:");
 
-                printVehicles(m_garage.GetFuelVehicles);
-                printVehicles(m_garage.GetElectricVehicles);
+                printVehicles(m_Garage.GetFuelVehicles);
+                printVehicles(m_Garage.GetElectricVehicles);
             }
             else
             {
                 write(String.Format("Listing vehicles in status {0}:", Enum.GetName(typeof(eVehicleStatus), option)));
-                printVehicles(m_garage.GetFuelVehicles, (eVehicleStatus)option);
-                printVehicles(m_garage.GetElectricVehicles, (eVehicleStatus)option);
+                printVehicles(m_Garage.GetFuelVehicles, (eVehicleStatus)option);
+                printVehicles(m_Garage.GetElectricVehicles, (eVehicleStatus)option);
             }
         }
 
@@ -351,7 +351,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         {
             string licenseNumber = getLicenceNumberFromUser();
 
-            Vehicle vehicle = m_garage.GetVehicle(licenseNumber);
+            Vehicle vehicle = m_Garage.GetVehicle(licenseNumber);
 
             if (vehicle != null)
             {
@@ -370,13 +370,13 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         {
             string licenseNumber = getLicenceNumberFromUser();
 
-            Vehicle vehicle = m_garage.GetVehicle(licenseNumber);
+            Vehicle vehicle = m_Garage.GetVehicle(licenseNumber);
             
             if (vehicle != null)
             {
                 printVehicleStatusMenu(false);
                 eVehicleStatus status = getVehicleStatusFromUser();
-                m_garage.ChangeStatus(vehicle, status);
+                m_Garage.ChangeStatus(vehicle, status);
             }
             else
             {
@@ -414,7 +414,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         {
 
             string licenseNumber = getLicenceNumberFromUser();
-            Vehicle vehicle = m_garage.GetVehicle(licenseNumber);
+            Vehicle vehicle = m_Garage.GetVehicle(licenseNumber);
 
             // No such vehicle, add it
             if (vehicle == null)
@@ -424,14 +424,14 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 vehicle.LicenseNum = licenseNumber;
                 vehicle.OwnerName = getOwnerNameFromUser();
                 vehicle.OwnerPhone = getOwnerPhoneFromUser();
-                m_garage.AddVehicle(vehicle);
+                m_Garage.AddVehicle(vehicle);
                 
                 write("Vehicle was successfuly added!");
             }
             // Already exist, change status
             else
             {
-                m_garage.ChangeStatus(vehicle, eVehicleStatus.InReparation);
+                m_Garage.ChangeStatus(vehicle, eVehicleStatus.InReparation);
                 write(String.Format("Vehicle status changed to {0}", eVehicleStatus.InReparation));
             }
         }
@@ -563,7 +563,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         private void printVehicleTypeMenu()
         {
             write("Please choose vehicle type");
-            string[] types = Enum.GetNames(typeof(VehicleBuilder.eVehicleType));
+            string[] types = m_Garage.getVehicleTypesAsStrings();
             int count = 1;
             foreach (string type in types)
             {
