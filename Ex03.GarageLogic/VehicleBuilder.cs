@@ -33,5 +33,14 @@ namespace Ex03.GarageLogic
             }
             return vehicle;
         }
+
+        public enum eVehicleType
+        {
+            FuelCar = 1,
+            ElectricCar,
+            FuelMotorcicle,
+            ElectricMotorcicle,
+            Truck
+        }
     }
 }

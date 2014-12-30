@@ -33,7 +33,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
             //DEBUG START
 
-            Vehicle v1 = m_VehicleBuilder.buildVehicle(eVehicleType.FuelCar);
+            Vehicle v1 = m_VehicleBuilder.buildVehicle(VehicleBuilder.eVehicleType.FuelCar);
             v1.LicenseNum = "123";
 
             m_garage.AddVehicle(v1);
@@ -419,7 +419,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             // No such vehicle, add it
             if (vehicle == null)
             {
-                eVehicleType typeOfVehicle = getVehicleType();
+                VehicleBuilder.eVehicleType typeOfVehicle = getVehicleType();
                 vehicle = m_VehicleBuilder.buildVehicle(typeOfVehicle);
                 vehicle.LicenseNum = licenseNumber;
                 vehicle.OwnerName = getOwnerNameFromUser();
@@ -534,7 +534,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         /// 
         /// </summary>
         /// <returns></returns>
-        private eVehicleType getVehicleType()
+        private VehicleBuilder.eVehicleType getVehicleType()
         {
             bool isGoodInput = false;
             int vehicleType = 0;
@@ -554,7 +554,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 }
             } while (!isGoodInput);
 
-            return (eVehicleType)vehicleType;
+            return (VehicleBuilder.eVehicleType)vehicleType;
         }
 
         /// <summary>
@@ -563,7 +563,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         private void printVehicleTypeMenu()
         {
             write("Please choose vehicle type");
-            string[] types = Enum.GetNames(typeof(eVehicleType));
+            string[] types = Enum.GetNames(typeof(VehicleBuilder.eVehicleType));
             int count = 1;
             foreach (string type in types)
             {
