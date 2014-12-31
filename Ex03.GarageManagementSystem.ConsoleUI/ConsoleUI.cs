@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Ex03.GarageLogic;
+using System.Reflection;
 
 namespace Ex03.GarageManagementSystem.ConsoleUI
 {
@@ -88,6 +89,9 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
+        /// <summary>
+        /// Charges electric vehicle
+        /// </summary>
         private void charge()
         {
             string licenseNumber = getLicenceNumberFromUser();
@@ -190,7 +194,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Valid fuel type</returns>
         private eFuelType getFuelTypeFromUser()
         {
          
@@ -232,7 +236,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         }
 
         /// <summary>
-        /// 
+        /// Inflates tires of given vehicle
         /// </summary>
         private void inflateTires()
         {   
@@ -279,14 +283,14 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             {
                 write("Listing all vehicles in the garage:");
 
-                printVehicles(m_Garage.GetFuelVehicles);
-                printVehicles(m_Garage.GetElectricVehicles);
+                printVehicleLicenses(m_Garage.GetFuelVehicles);
+                printVehicleLicenses(m_Garage.GetElectricVehicles);
             }
             else
             {
                 write(String.Format("Listing vehicles in status {0}:", Enum.GetName(typeof(eVehicleStatus), option)));
-                printVehicles(m_Garage.GetFuelVehicles, (eVehicleStatus)option);
-                printVehicles(m_Garage.GetElectricVehicles, (eVehicleStatus)option);
+                printVehicleLicensesByStatus(m_Garage.GetFuelVehicles, (eVehicleStatus)option);
+                printVehicleLicensesByStatus(m_Garage.GetElectricVehicles, (eVehicleStatus)option);
             }
         }
 
@@ -314,17 +318,17 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         /// Overload for printing vehicles in all statuses
         /// </summary>
         /// <param name="vehicles"></param>
-        private void printVehicles(Dictionary<string, Vehicle> vehicles)
+        private void printVehicleLicenses(Dictionary<string, Vehicle> vehicles)
         {
-            printVehicles(vehicles, null);
+            printVehicleLicensesByStatus(vehicles, null);
         }
 
         /// <summary>
-        /// 
+        /// Prints vehicle licenses, filtered by status
         /// </summary>
-        /// <param name="vehicles"></param>
-        /// <param name="status"></param>
-        private void printVehicles(Dictionary<string, Vehicle> vehicles, eVehicleStatus? status)
+        /// <param name="vehicles">Collection of vehicles</param>
+        /// <param name="status">Gives option to filter vehicles by status, displays all vehicles if status is null</param>
+        private void printVehicleLicensesByStatus(Dictionary<string, Vehicle> vehicles, eVehicleStatus? status)
         {
             foreach (KeyValuePair<string, Vehicle> entry in vehicles)
             {
@@ -364,7 +368,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         }
 
         /// <summary>
-        /// 
+        /// Gets new status from user and changes the vehicle status if exists
         /// </summary>
         private void changeVehicleStatus()
         {
@@ -424,6 +428,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 vehicle.LicenseNum = licenseNumber;
                 vehicle.OwnerName = getOwnerNameFromUser();
                 vehicle.OwnerPhone = getOwnerPhoneFromUser();
+                getAdditionalDetails(vehicle);
                 m_Garage.AddVehicle(vehicle);
                 
                 write("Vehicle was successfuly added!");
@@ -437,10 +442,86 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="io_Vehicle"></param>
+        private void getAdditionalDetails(Vehicle io_Vehicle)
+        {
+            foreach (PropertyInfo property in io_Vehicle.GetType().GetProperties()) 
+            {
+                if (!isKnownProperty(property.Name))
+                {
+                    write("Please enter " + property.Name);
+                    if (property.PropertyType == typeof(string))
+                    {
+                        property.SetValue(io_Vehicle, getStringFromUser(), null);
+                    }
+                    else if (property.PropertyType == typeof(bool))
+                    {
+                        property.SetValue(io_Vehicle, getBooleanFromUser(), null);
+                    }
+                    else if (property.PropertyType.IsEnum)
+                    {
+                        property.SetValue(io_Vehicle, getEnumFromUser(property.PropertyType), null);
+                    }
+                }
+            }
+        }
+
+        private bool getBooleanFromUser()
+        {
+            bool isValid = false;
+            bool answer;
+
+            do
+            {
+                write("Please enter 'true' or 'false'");
+                if (bool.TryParse(Console.ReadLine(), out answer))
+                {
+                    isValid = true;
+                }
+            } while (!isValid);
+
+            return answer;
+        }
+
+        private int getEnumFromUser(Type i_Type)
+        {
+            Array types = Enum.GetValues(i_Type);
+
+            foreach (eFuelType type in types)
+            {
+                Console.WriteLine("{0}. {1}", (int)type, Enum.GetName(i_Type, type));
+            }
+
+            return 1;
+        }
+
+        private object getStringFromUser()
+        {
+            return Console.ReadLine();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        private bool isKnownProperty(string p)
+        {
+            List<string> knownProperties = new List<string>() { "OwnerName",
+                                                                "OwnerPhone",
+                                                                "VehicleStatus",
+                                                                "LicenseNum"};
+
+            return knownProperties.Contains(p);
+        }
+
+        /// <summary>
         /// Get name in a naive way
         /// We only require that the name contains at least two letters
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Valid owner name</returns>
         private string getOwnerNameFromUser()
         {
             bool isValidInput = false;
@@ -606,7 +687,10 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             return (eMenuOption) menuOption;
         }
 
-
+        /// <summary>
+        /// Prints a single menu option
+        /// </summary>
+        /// <param name="i_MenuOption">Option index</param>
         private void printMenuOption(eMenuOption i_MenuOption)
         {
             StringBuilder menuOptionText = new StringBuilder();
