@@ -420,7 +420,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             if (vehicle == null)
             {
 
-                VehicleBuilder.eVehicleType typeOfVehicle = getVehicleType();
+                VehicleBuilder.eVehicleType typeOfVehicle = getVehicleTypeFromUser();
                 string vehicleModel = getVehicleModelFromUser();
                 string[] vehicleSpecificDetails = getVehicleSpecificDetailsFromUser(typeOfVehicle);
                 vehicle = m_Garage.vehicleBuilder.buildVehicle(licenseNumber, typeOfVehicle, vehicleModel, vehicleSpecificDetails);
