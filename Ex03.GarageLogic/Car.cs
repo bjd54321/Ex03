@@ -9,7 +9,12 @@ namespace Ex03.GarageLogic
         private eCarColor m_CarColor;
         private eNumOfDoors m_NumOfDoors = eNumOfDoors.Four;
 
-
+        public eCarColor CarColor
+        {
+            get { return m_CarColor; }
+            set { m_CarColor = value; }
+        }
+        
 
         public eNumOfDoors NumOfDoors
         {

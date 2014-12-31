@@ -468,6 +468,10 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
         }
 
+        /// <summary>
+        ///  Gets boolean value from user
+        /// </summary>
+        /// <returns></returns>
         private bool getBooleanFromUser()
         {
             bool isValid = false;
@@ -485,16 +489,35 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             return answer;
         }
 
+        /// <summary>
+        /// Gets an arbitrary enum from user
+        /// </summary>
+        /// <param name="i_Type"></param>
+        /// <returns></returns>
         private int getEnumFromUser(Type i_Type)
         {
+            bool isValidInput = false;
             Array types = Enum.GetValues(i_Type);
+            string option = "";
+            int optionAsInt;
 
             foreach (eFuelType type in types)
             {
                 Console.WriteLine("{0}. {1}", (int)type, Enum.GetName(i_Type, type));
             }
 
-            return 1;
+            do
+            {
+                write("Please choose your value");
+                option = Console.ReadLine();
+                if (int.TryParse(option, out optionAsInt) && Enum.IsDefined(i_Type, optionAsInt))
+                {
+                    isValidInput = true;
+                }
+
+            } while (!isValidInput);
+
+            return (int)Enum.Parse(i_Type, option);
         }
 
         private object getStringFromUser()
@@ -512,6 +535,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             List<string> knownProperties = new List<string>() { "OwnerName",
                                                                 "OwnerPhone",
                                                                 "VehicleStatus",
+                                                                "NumOfDoors",
+                                                                "TypeOfEnergy",
                                                                 "LicenseNum"};
 
             return knownProperties.Contains(p);
