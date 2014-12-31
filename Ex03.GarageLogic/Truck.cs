@@ -31,12 +31,14 @@ namespace Ex03.GarageLogic
             get { return m_MaxCarryWeight; }
             set { m_MaxCarryWeight = value; }
         }
-        
-        
+
+
 
         public Truck() 
-        {
-
+        {          
+            m_NumOfTires = 8;
+            m_EnergySystem = new FuelSystem(200, eFuelType.Soler);
+            r_TypeOfEnergy = eTypeOfEnergy.Fuel;
         }
 
         public override string Print()

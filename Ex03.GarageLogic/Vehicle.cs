@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
         protected string m_BrandName;
         protected string m_LicenseNum;
         protected float m_RemainingEnergyPercentage;
-        protected List<Tire> m_Tires;
+        protected List<Tire> m_Tires = new List<Tire>();
         protected int m_NumOfTires;
         protected string m_OwnerName;
         protected string m_OwnerPhone;
@@ -60,6 +60,7 @@ namespace Ex03.GarageLogic
             public string BrandName
             {
                 get { return m_BrandName; }
+                set { m_BrandName = value; }
             }
 
             /// <summary>
@@ -203,6 +204,22 @@ namespace Ex03.GarageLogic
             foreach (Tire tire in m_Tires)
             {
                 tire.Inflate(tire.MaxAirPressure - tire.AirPressure);
+            }
+        }
+
+        public void InitTires(string i_BrandName)
+        {
+            for (int i = 0; i < m_NumOfTires; i++)
+            {
+                m_Tires.Add(new Tire(28, i_BrandName));
+            }
+        }
+
+        public void SetTiresBrand(string i_BrandName)
+        {
+            foreach (Tire tire in m_Tires)
+            {
+                tire.BrandName = i_BrandName;
             }
         }
 

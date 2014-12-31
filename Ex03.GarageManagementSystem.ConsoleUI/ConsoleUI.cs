@@ -428,6 +428,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 vehicle.LicenseNum = licenseNumber;
                 vehicle.OwnerName = getOwnerNameFromUser();
                 vehicle.OwnerPhone = getOwnerPhoneFromUser();
+                getTireDetails(vehicle);
                 getAdditionalDetails(vehicle);
                 m_Garage.AddVehicle(vehicle);
                 
@@ -439,6 +440,13 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 m_Garage.ChangeStatus(vehicle, eVehicleStatus.InReparation);
                 write(String.Format("Vehicle status changed to {0}", eVehicleStatus.InReparation));
             }
+        }
+
+        private void getTireDetails(Vehicle vehicle)
+        {            
+            write("Please enter the brand of tires");
+            string brandName = getStringFromUser();
+            vehicle.InitTires(brandName);
         }
 
         /// <summary>
@@ -520,7 +528,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             return (int)Enum.Parse(i_Type, option);
         }
 
-        private object getStringFromUser()
+        private string getStringFromUser()
         {
             return Console.ReadLine();
         }
