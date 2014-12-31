@@ -472,8 +472,29 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                     {
                         property.SetValue(io_Vehicle, getEnumFromUser(property.PropertyType), null);
                     }
+                    else if (property.PropertyType == typeof(string))
+                    {
+                        property.SetValue(io_Vehicle, getFloatFromUser(), null);
+                    }
                 }
             }
+        }
+
+        private object getFloatFromUser()
+        {
+            bool isValid = false;
+            float answer;
+
+            do
+            {
+                write("Please enter float: ");
+                if (float.TryParse(Console.ReadLine(), out answer))
+                {
+                    isValid = true;
+                }
+            } while (!isValid);
+
+            return answer;
         }
 
         /// <summary>
@@ -595,7 +616,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         /// Validates phone without using regex
         /// No complex validation, eg 1, 123-123 are all valid phones
         /// </summary>
-        /// <param name="i_OwnerPhone"></param>
+        /// <param name="i_OwnerPhone">string that represents the phone number</param>
         /// <returns></returns>
         private bool isPhoneValid(string i_OwnerPhone)
         {
