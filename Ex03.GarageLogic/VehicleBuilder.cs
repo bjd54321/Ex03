@@ -4,10 +4,12 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
+    /// <summary>
+    /// Factory method for creating predefined vehicles dynamically
+    /// </summary>
     public class VehicleBuilder
     {
      
-
         public Vehicle buildVehicle(eVehicleType i_TypeOfVehicle)
         {
             Vehicle vehicle = null;
@@ -45,13 +47,13 @@ namespace Ex03.GarageLogic
 
         internal string[] getVehicleTypesAsStrings()
         {
-            string[] types = new string[5];
-            types[0] = "Fuel car";
-            types[1] = "Electric car";
-            types[2] = "Fuel motorcicle";
-            types[3] = "Electric motorcicle";
-            types[4] = "Truck";
-            return types;
+            List<String> types = new List<String>();
+            types.Add("Fuel car");
+            types.Add("Electric car");
+            types.Add("Fuel motorcicle");
+            types.Add("Electric motorcicle");
+            types.Add("Truck");
+            return types.ToArray();
         }
     }
 }

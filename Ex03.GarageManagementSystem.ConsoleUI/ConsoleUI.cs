@@ -49,7 +49,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             do
             {
                 printMainMenuOptions();
-                menuOption = getMenuOptionFromUser();
+                menuOption = getMainMenuOptionFromUser();
 
                 Console.Clear();
                 performSelectedOption(menuOption);
@@ -419,7 +419,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             // No such vehicle, add it
             if (vehicle == null)
             {
-                VehicleBuilder.eVehicleType typeOfVehicle = getVehicleType();
+                VehicleBuilder.eVehicleType typeOfVehicle = getVehicleTypeFromUser();
                 vehicle = m_VehicleBuilder.buildVehicle(typeOfVehicle);
                 vehicle.LicenseNum = licenseNumber;
                 vehicle.OwnerName = getOwnerNameFromUser();
@@ -531,10 +531,10 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         }
 
         /// <summary>
-        /// 
+        /// Gets valid vehicle type from user
         /// </summary>
-        /// <returns></returns>
-        private VehicleBuilder.eVehicleType getVehicleType()
+        /// <returns>Enum that represents vehicle type</returns>
+        private VehicleBuilder.eVehicleType getVehicleTypeFromUser()
         {
             bool isGoodInput = false;
             int vehicleType = 0;
@@ -558,7 +558,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         }
 
         /// <summary>
-        /// 
+        /// Displays vehicle types menu to user
         /// </summary>
         private void printVehicleTypeMenu()
         {
@@ -581,7 +581,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }            
         }
 
-        private eMenuOption getMenuOptionFromUser()
+        private eMenuOption getMainMenuOptionFromUser()
         {
             bool numberIsInt = false;
             bool goodInput = false;
