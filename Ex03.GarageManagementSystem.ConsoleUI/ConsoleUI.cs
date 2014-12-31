@@ -10,7 +10,6 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
     {
         private GarageLogic.Garage m_Garage;
 
-        private GarageLogic.VehicleBuilder m_VehicleBuilder;
 
         private const int k_MinMainMenuOption = 1;
         private const int r_MaxMainMenuOption = 8;
@@ -18,8 +17,6 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         private const int k_MinLicenseLength = 1;
         private const int k_MaxLicenseLength = 10;
 
-        private const int k_MinVehicleType = 1;
-        private const int k_MaxVehicleType = 5;
 
         // Indicates vehicles in all statuses
         private const int k_AllStatuses = 0;
@@ -30,14 +27,13 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         public ConsoleUI()
         {
             m_Garage = new GarageLogic.Garage();
-            m_VehicleBuilder = new VehicleBuilder();
 
             //DEBUG START
 
-            Vehicle v1 = m_VehicleBuilder.buildVehicle(VehicleBuilder.eVehicleType.FuelCar);
-            v1.LicenseNum = "123";
+            //Vehicle v1 = m_Garage.vehicleBuilder.buildVehicle(VehicleBuilder.eVehicleType.FuelCar);
+            //v1.LicenseNum = "123";
 
-            m_Garage.AddVehicle(v1);
+            //m_Garage.AddVehicle(v1);
             //DEBUG END
 
             Run();
@@ -423,8 +419,12 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             // No such vehicle, add it
             if (vehicle == null)
             {
-                VehicleBuilder.eVehicleType typeOfVehicle = getVehicleTypeFromUser();
-                vehicle = m_VehicleBuilder.buildVehicle(typeOfVehicle);
+
+                VehicleBuilder.eVehicleType typeOfVehicle = getVehicleType();
+                string vehicleModel = getVehicleModelFromUser();
+                string[] vehicleSpecificDetails = getVehicleSpecificDetailsFromUser(typeOfVehicle);
+                vehicle = m_Garage.vehicleBuilder.buildVehicle(licenseNumber, typeOfVehicle, vehicleModel, vehicleSpecificDetails);
+                vehicle.Tires = getTiresDetailsFromUser(vehicle);
                 vehicle.LicenseNum = licenseNumber;
                 vehicle.OwnerName = getOwnerNameFromUser();
                 vehicle.OwnerPhone = getOwnerPhoneFromUser();
@@ -433,12 +433,89 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 
                 write("Vehicle was successfuly added!");
             }
-            // Already exist, change status
+            // Already exists, change status
             else
             {
                 m_Garage.ChangeStatus(vehicle, eVehicleStatus.InReparation);
                 write(String.Format("Vehicle status changed to {0}", eVehicleStatus.InReparation));
             }
+        }
+
+        private string getVehicleModelFromUser()
+        {
+            string vehicleModel;
+            Console.WriteLine("Please enter the vehicle model");
+            vehicleModel = Console.ReadLine();
+
+            return vehicleModel;
+        }
+
+        private string[] getVehicleSpecificDetailsFromUser(VehicleBuilder.eVehicleType typeOfVehicle)
+        {
+            string[] vehicleDetailsList = m_Garage.vehicleBuilder.GetVehicleDetails(typeOfVehicle);
+            string[] vehicleDetails = new string[vehicleDetailsList.Length];
+            for (int i = 0; i < vehicleDetailsList.Length; i++)
+            {
+                Console.WriteLine("Please enter " + vehicleDetailsList[i]);
+                vehicleDetails[i] = Console.ReadLine();
+            }
+
+            return vehicleDetails;
+        }
+
+        private List<Vehicle.Tire> getTiresDetailsFromUser(Vehicle i_Vehicle)
+        {
+            bool isGoodInput = false;
+            List<Vehicle.Tire> tires = new List<Vehicle.Tire>();
+            //float fuelAmount = 0;
+            float airPressure;
+            string brandName;
+
+            foreach (Vehicle.Tire tire in i_Vehicle.Tires)
+	        {
+                int i = 1;
+                
+                do
+                {
+                    Console.WriteLine("Please enter the current air pressure for tire {0}:", i);
+
+                    string optionAsString = Console.ReadLine();
+
+                    if (!float.TryParse(optionAsString, out airPressure) || airPressure <= 0)
+                    {
+                        System.Console.WriteLine("The input you entered is invalid.");
+                    }
+                    else
+                    {
+                        isGoodInput = true;
+                    }
+
+                } while (!isGoodInput);
+
+                isGoodInput = false;
+                do
+                {
+                    Console.WriteLine("Please enter tire {0}'s brand:", i);
+
+                    brandName = Console.ReadLine();
+
+                    if (brandName.Length < 1)
+                    {
+                        System.Console.WriteLine("The input you entered is invalid.");
+                    }
+                    else
+                    {
+                        isGoodInput = true;
+                    }
+
+                } while (!isGoodInput);
+
+                i++;
+
+                //tires.Add(new Vehicle.Tire(airPressure,));
+	        }
+
+            return tires;
         }
 
         /// <summary>
@@ -650,7 +727,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 printVehicleTypeMenu();
                 string inputText = System.Console.ReadLine();
 
-                if (!int.TryParse(inputText, out vehicleType) || vehicleType < k_MinVehicleType || vehicleType > k_MaxVehicleType)
+                if (!int.TryParse(inputText, out vehicleType) || vehicleType < m_Garage.vehicleBuilder.MinVehicleType || vehicleType > m_Garage.vehicleBuilder.MaxVehicleType)
                 {
                     System.Console.WriteLine("The input you entered is invalid.");
                 }
@@ -670,11 +747,11 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         {
             write("Please choose vehicle type");
             string[] types = m_Garage.getVehicleTypesAsStrings();
-            int count = 1;
+            int numericVehicleType = m_Garage.vehicleBuilder.MinVehicleType;
             foreach (string type in types)
             {
-                Console.WriteLine("{0}. {1}", count, type);
-                count++;
+                Console.WriteLine("{0}. {1}", numericVehicleType, type);
+                numericVehicleType++;
             }
         }
 

@@ -10,8 +10,6 @@ namespace Ex03.GarageLogic
         private float m_MaxCarryWeight;
         private float m_CarryWeight;
 
-
-
         public bool CarriesDangerousMaterials
         {
             get { return m_CarriesDangerousMaterials; }
@@ -32,13 +30,6 @@ namespace Ex03.GarageLogic
             set { m_MaxCarryWeight = value; }
         }
         
-        
-
-        public Truck() 
-        {
-
-        }
-
         public override string Print()
         {
             StringBuilder sb = new StringBuilder();

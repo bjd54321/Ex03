@@ -9,40 +9,45 @@ namespace Ex03.GarageLogic
         private eCarColor m_CarColor;
         private eNumOfDoors m_NumOfDoors = eNumOfDoors.Four;
 
+        private string modelName;
+        private string licenseNumber;
+        private eCarColor color;
+        private int numOfDoors;
+        private eTypeOfEnergy eTypeOfEnergy;
+        private eFuelType fuelType;
+        private float currFuelAmount;
+        private float tankVolume;
         public eCarColor CarColor
         {
             get { return m_CarColor; }
             set { m_CarColor = value; }
         }
-        
 
         public eNumOfDoors NumOfDoors
         {
             get { return m_NumOfDoors; }
             set { m_NumOfDoors = value; }
         }
-        
 
-        public Car(string i_TireBrandName)
-        {
-            m_NumOfTires = 4;
-            m_Tires = new List<Vehicle.Tire>();
-            for (int i = 0; i < m_NumOfTires; i++)
-            {
-                m_Tires.Add(new Tire(29, i_TireBrandName));
-            }
-        }
+
+        //public Car(eTypeOfEnergy i_TypeOfEnergy, string[] i_Details)
+        //{
+        //    //Vehicle(i_TypeOfEnergy, i_FuelType, i_FuelTankVolume, i_NumOfTires, i_MaxAirPressure)
+        //}
         
-        public Car(eFuelType i_FuelType, float i_FuelTankVolume, string i_TireBrandName) : this(i_TireBrandName)
+        public Car(eTypeOfEnergy i_TypeOfEnergy, eFuelType i_FuelType, float i_FuelTankVolume, int i_NumOfTires, float i_MaxAirPressure) : base(i_TypeOfEnergy, i_FuelType, i_FuelTankVolume, i_NumOfTires, i_MaxAirPressure)
         {
-            r_TypeOfEnergy = eTypeOfEnergy.Fuel;
-            m_EnergySystem = new FuelSystem(i_FuelTankVolume, i_FuelType);
         }
 
-        public Car(eTypeOfEnergy i_TypeOfEnergy, float i_MaxBatteryTime, string i_TireBrandName) : this(i_TireBrandName)
+        public Car(eTypeOfEnergy i_TypeOfEnergy, float i_MaxBatteryTime, int i_NumOfTires, float i_MaxAirPressure) : base(i_TypeOfEnergy, i_MaxBatteryTime, i_NumOfTires, i_MaxAirPressure)
         {
-            r_TypeOfEnergy = i_TypeOfEnergy;
-            m_EnergySystem = new ElectricSystem(i_MaxBatteryTime);
+        }
+
+        public Car(string i_ModelName, string i_LicenseNumber, eCarColor i_Color, int i_NumOfDoors, eTypeOfEnergy i_TypeOfEnergy, eFuelType i_FuelType, float i_CurrFuelAmount, float i_TankVolume): base(i_ModelName, i_LicenseNumber, i_TypeOfEnergy,i_FuelType, i_TankVolume)
+        {
+            m_CarColor = i_Color;
+            m_NumOfDoors = (eNumOfDoors) i_NumOfDoors;
+
         }
 
         public override string Print()
