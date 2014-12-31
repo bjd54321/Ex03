@@ -9,9 +9,17 @@ namespace Ex03.GarageLogic
         private eLicenseType m_LicenseType;
         private int r_EngineVolume; // in cm^3
 
-        public Motorcicle(eTypeOfEnergy i_TypeOfEnergy) 
+        //public Motorcicle(eTypeOfEnergy i_TypeOfEnergy) 
+        //{
+        //    m_NumOfTires = 2;
+        //}
+
+        public Motorcicle(eTypeOfEnergy i_TypeOfEnergy, eFuelType i_FuelType, float i_FuelTankVolume, int i_NumOfTires, float i_MaxAirPressure): base(i_TypeOfEnergy, i_FuelType, i_FuelTankVolume, i_NumOfTires, i_MaxAirPressure)
         {
-            m_NumOfTires = 2;
+        }
+
+        public Motorcicle(eTypeOfEnergy i_TypeOfEnergy, float i_MaxBatteryTime, int i_NumOfTires, float i_MaxAirPressure) : base(i_TypeOfEnergy, i_MaxBatteryTime, i_NumOfTires, i_MaxAirPressure)
+        {
         }
 
         public eLicenseType LicenseType 

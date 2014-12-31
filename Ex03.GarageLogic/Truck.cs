@@ -10,9 +10,8 @@ namespace Ex03.GarageLogic
         private readonly float r_MaxCarryWeight;
         private float m_CarryWeight;
 
-        public Truck() 
+        public Truck(eTypeOfEnergy i_TypeOfEnergy, eFuelType i_FuelType, float i_FuelTankVolume, int i_NumOfTires, float i_MaxAirPressure): base(i_TypeOfEnergy, i_FuelType, i_FuelTankVolume, i_NumOfTires, i_MaxAirPressure)
         {
-
         }
 
         public override string Print()

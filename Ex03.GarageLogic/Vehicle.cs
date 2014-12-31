@@ -6,19 +6,75 @@ namespace Ex03.GarageLogic
 {
     public abstract class Vehicle
     {
-        protected string m_BrandName;
-        protected string m_LicenseNum;
+        protected string m_ModelName;
+        protected string m_LicenseNumber;
         protected float m_RemainingEnergyPercentage;
         protected List<Tire> m_Tires;
-        protected int m_NumOfTires;
+        protected readonly int r_NumOfTires;
         protected string m_OwnerName;
         protected string m_OwnerPhone;
         protected eVehicleStatus m_VehicleStatus = eVehicleStatus.InReparation;
-        protected eTypeOfEnergy r_TypeOfEnergy;
-        protected GenericEnergySystem m_EnergySystem;
+        protected readonly eTypeOfEnergy r_TypeOfEnergy;
+        protected readonly GenericEnergySystem r_EnergySystem;
 
 
+        public Vehicle(eTypeOfEnergy i_TypeOfEnergy, int i_NumOfTires, float i_MaxAirPressure)
+        {
+            r_TypeOfEnergy = i_TypeOfEnergy;
+            r_NumOfTires = i_NumOfTires;
+            m_Tires = new List<Vehicle.Tire>();
+            //for (int i = 0; i < r_NumOfTires; i++)
+            //{
+            //    m_Tires.Add(new Tire(29, i_TireBrandName)); LETAKEN PO
+            //}
+        }
+
+        public Vehicle(eTypeOfEnergy i_TypeOfEnergy, eFuelType i_FuelType, float i_FuelTankVolume, int i_NumOfTires, float i_MaxAirPressure) : this(i_TypeOfEnergy, i_NumOfTires, i_MaxAirPressure)
+        {
+            if(i_TypeOfEnergy == eTypeOfEnergy.Fuel)
+            {
+                r_EnergySystem = new FuelSystem(i_FuelTankVolume, i_FuelType);
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
+        public Vehicle(eTypeOfEnergy i_TypeOfEnergy, float i_MaxBatteryTime, int i_NumOfTires, float i_MaxAirPressure) : this(i_TypeOfEnergy, i_NumOfTires, i_MaxAirPressure)
+        {
+            if (i_TypeOfEnergy == eTypeOfEnergy.Electric)
+            {
+                r_EnergySystem = new ElectricSystem(i_MaxBatteryTime);
+                r_TypeOfEnergy = eTypeOfEnergy.Electric;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
+        public Vehicle(string i_ModelName, string i_LicenseNumber, eTypeOfEnergy i_TypeOfEnergy, eFuelType i_FuelType, float i_TankVolume)
+        {
+            if (i_TypeOfEnergy == eTypeOfEnergy.Fuel)
+            {
+                r_EnergySystem = new FuelSystem(i_TankVolume, i_FuelType);
+                r_TypeOfEnergy = eTypeOfEnergy.Fuel;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+            m_ModelName = i_ModelName;
+            m_LicenseNumber = i_LicenseNumber;
+        }
         
+        public List<Tire> Tires
+        {
+            get { return m_Tires; }
+            set { m_Tires = value; }
+        }
+
         public string OwnerName
         {
             get { return m_OwnerName; }
@@ -34,16 +90,16 @@ namespace Ex03.GarageLogic
         }
         
 
-        protected class Tire
+        public class Tire
         {
             private string m_BrandName;
             private float m_AirPressure;
             private readonly float r_MaxAirPressure;
 
-            public Tire(float i_MaxAirPressure, string i_TireBrandName)
+            public Tire(float i_CurrAirPressure, float i_MaxAirPressure, string i_TireBrandName)
             {
                 r_MaxAirPressure = i_MaxAirPressure;
-                m_AirPressure = i_MaxAirPressure;
+                m_AirPressure = i_CurrAirPressure;
                 m_BrandName = i_TireBrandName;
             }
 
@@ -99,7 +155,7 @@ namespace Ex03.GarageLogic
 
         public class FuelSystem : GenericEnergySystem
         {
-            private eFuelType m_FuelType;
+            private readonly eFuelType r_FuelType;
             private float m_CurrFuelQuantity;
             private readonly float r_FuelTankVolume;
 
@@ -107,16 +163,21 @@ namespace Ex03.GarageLogic
 
             public FuelSystem(float i_FuelTankVolume, eFuelType i_FuelType)
             {
-                m_FuelType = i_FuelType;
+                r_FuelType = i_FuelType;
                 r_FuelTankVolume = i_FuelTankVolume;
+            }
+
+            public FuelSystem()
+            {
+                // TODO: Complete member initialization
             }
             
             public void AddFuel(float i_FuelLitersToAdd, eFuelType i_FuelTypeToAdd)
             {
-                if(i_FuelTypeToAdd != m_FuelType)
+                if(i_FuelTypeToAdd != r_FuelType)
                 {
                     throw new ArgumentException(String.Format("Fuel {0} is not compatible with this vehicle, it uses {1}",
-                        i_FuelTypeToAdd, m_FuelType));
+                        i_FuelTypeToAdd, r_FuelType));
                 }
                 if (m_CurrFuelQuantity + i_FuelLitersToAdd <= r_FuelTankVolume)
                 {
@@ -132,7 +193,7 @@ namespace Ex03.GarageLogic
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("Fuel engine").Append(Environment.NewLine);
-                sb.Append("Fuel type: ").Append(Enum.GetName(typeof(eFuelType), m_FuelType)).Append(Environment.NewLine);
+                sb.Append("Fuel type: ").Append(Enum.GetName(typeof(eFuelType), r_FuelType)).Append(Environment.NewLine);
                 sb.Append("Current fuel volume: ").Append(m_CurrFuelQuantity).Append(Environment.NewLine);
                 sb.Append("Max fuel volume: ").Append(r_FuelTankVolume).Append(Environment.NewLine);
 
@@ -188,13 +249,13 @@ namespace Ex03.GarageLogic
 
         public GenericEnergySystem GetEnergySystem()
         {
-            return m_EnergySystem;
+            return r_EnergySystem;
         }
 
         public string LicenseNum
         {
-            get {return m_LicenseNum;}
-            set { m_LicenseNum = value; }
+            get {return m_LicenseNumber;}
+            set { m_LicenseNumber = value; }
         }
 
 
@@ -219,13 +280,13 @@ namespace Ex03.GarageLogic
         public virtual string Print()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("Brand name: ").Append(m_BrandName).Append(Environment.NewLine).
-               Append("License numbers: ").Append(m_LicenseNum).Append(Environment.NewLine).
+            sb.Append("Brand name: ").Append(m_ModelName).Append(Environment.NewLine).
+               Append("License numbers: ").Append(m_LicenseNumber).Append(Environment.NewLine).
                Append("Owner name: ").Append(m_OwnerName).Append(Environment.NewLine).
                Append("Owner phone: ").Append(m_OwnerPhone).Append(Environment.NewLine).
                Append("Status: ").Append(m_VehicleStatus).Append(Environment.NewLine).
                Append("Tires: ").Append(Environment.NewLine).Append(GetTireDetails()).Append(Environment.NewLine).
-               Append("Engine: ").Append(Environment.NewLine).Append(m_EnergySystem.Print()).Append(Environment.NewLine); 
+               Append("Engine: ").Append(Environment.NewLine).Append(r_EnergySystem.Print()).Append(Environment.NewLine); 
         
             return sb.ToString();
         }
