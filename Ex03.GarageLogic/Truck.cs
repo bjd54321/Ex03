@@ -33,7 +33,7 @@ namespace Ex03.GarageLogic
             { 
                 if (value < m_CarryWeight)
                 {
-                    throw new ValueOutOfRangeException(String.Format("Your truck is already carries {0} tonn", m_CarryWeight));
+                    throw new ValueOutOfRangeException(String.Format("Your truck already carries {0} tonn", m_CarryWeight));
                 }
                 else
                 {

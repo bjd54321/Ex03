@@ -385,7 +385,7 @@ namespace Ex03.GarageLogic
             return sb.ToString();
         }
 
-        public void SetTirePressure(int i_TireIndex, int i_CurrentAirPressure)
+        public void SetTirePressure(int i_TireIndex, float i_CurrentAirPressure)
         {
             m_Tires[i_TireIndex].AirPressure = i_CurrentAirPressure;
         }

@@ -472,7 +472,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 Console.WriteLine("Please enter air pressure in tire {0}", (tiresCount + 1));
                 try
                 {
-                    vehicle.SetTirePressure(tiresCount, getIntFromUser());
+                    vehicle.SetTirePressure(tiresCount, getFloatFromUser());
                     tiresCount++;
                 }
                 catch (ValueOutOfRangeException rangeException)
@@ -544,6 +544,10 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 {
                     isValid = true;
                 }
+                else
+                {
+                    write("Invalid input. It must be an integer.");
+                }
             } while (!isValid);
 
             return answer;
@@ -560,6 +564,10 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 if (float.TryParse(Console.ReadLine(), out answer))
                 {
                     isValid = true;
+                }
+                else
+                {
+                    write("Invalid input. It must be a float.");
                 }
             } while (!isValid);
 
