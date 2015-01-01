@@ -17,7 +17,6 @@ namespace Ex03.GarageLogic
         protected eTypeOfEnergy r_TypeOfEnergy;
         protected GenericEnergySystem m_EnergySystem;
 
-
         
         public string OwnerName
         {
@@ -151,15 +150,17 @@ namespace Ex03.GarageLogic
                 r_MaxBatteryTime = i_MaxBatteryTime;
             }
 
-            public void ChargeBattery(float i_BatteryTimeToAdd)
+            public void ChargeBattery(float i_BatteryHoursToAdd)
             {
-                if(m_RemainingBatteryTime + i_BatteryTimeToAdd <= r_MaxBatteryTime)
+                if(m_RemainingBatteryTime + i_BatteryHoursToAdd <= r_MaxBatteryTime)
                 {
-                    m_RemainingBatteryTime += i_BatteryTimeToAdd;
+                    m_RemainingBatteryTime += i_BatteryHoursToAdd;
                 }
                 else
                 {
-                    throw new ValueOutOfRangeException(0, r_MaxBatteryTime);
+                    StringBuilder sb = new StringBuilder("Cannot charge more than ");
+                    sb.Append(r_MaxBatteryTime).Append(" hours");
+                    throw new ValueOutOfRangeException(sb.ToString(),0, r_MaxBatteryTime);
                 }
             }
 
