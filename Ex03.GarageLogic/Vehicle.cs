@@ -70,7 +70,48 @@ namespace Ex03.GarageLogic
         public string OwnerPhone
         {
             get { return m_OwnerPhone; }
-            set { m_OwnerPhone = value; }
+            set 
+            {
+                if (!isPhoneValid(value))
+                {
+                    throw new FormatException("Invalid phone number: " + value);
+                }
+                else
+                {
+                    m_OwnerPhone = value; 
+                }                
+            }
+        }
+
+        /// <summary>
+        /// Validates phone without using regex
+        /// No complex validation, eg 1, 123-123 are all valid phones
+        /// </summary>
+        /// <param name="i_OwnerPhone">string that represents the phone number</param>
+        /// <returns></returns>
+        private bool isPhoneValid(string i_OwnerPhone)
+        {
+            bool isValid = true;
+            char[] ownerPhoneAsCharArray = i_OwnerPhone.ToCharArray();
+            if (i_OwnerPhone.Trim().Replace("-", "").Length == 0)
+            {
+                isValid = false;
+            }
+            else
+            {
+                for (int i = 0; i < i_OwnerPhone.Length; i++)
+                {
+                    if (!Char.IsDigit(ownerPhoneAsCharArray[i])
+                        && ownerPhoneAsCharArray[i] != '-')
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+
+
+            return isValid;
         }
 
 
@@ -301,14 +342,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void InitTires(string i_BrandName)
-        {
-            m_Tires = new List<Tire>();
-            for (int i = 0; i < m_NumOfTires; i++)
-            {
-                m_Tires.Add(new Tire(28, i_BrandName));
-            }
-        }
+
 
         public void InitTires(string i_BrandName, int i_MaxAirPressure)
         {

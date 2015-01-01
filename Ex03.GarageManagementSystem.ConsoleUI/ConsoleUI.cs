@@ -453,7 +453,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 vehicle = m_VehicleBuilder.buildVehicle(typeOfVehicle);
                 vehicle.LicenseNum = licenseNumber;
                 vehicle.OwnerName = getOwnerNameFromUser();
-                vehicle.OwnerPhone = getOwnerPhoneFromUser();
+                getOwnerPhoneFromUser(vehicle);
                 getTireDetails(vehicle);
                 getAdditionalDetails(vehicle);
                 m_Garage.AddVehicle(vehicle);
@@ -489,7 +489,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 }
                 
             }
-            vehicle.InitTires(brandName);
+            vehicle.SetTiresBrand(brandName);
         }
 
         /// <summary>
@@ -658,54 +658,26 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             return ownerName;
         }
 
-        private string getOwnerPhoneFromUser()
+        private void getOwnerPhoneFromUser(Vehicle vehicle)
         {
             bool isValidInput = false;
-            string ownerPhone = "";
 
             do
             {
-                write("Please enter your phone number. Only digits and '-' are allowed");
-                ownerPhone = Console.ReadLine();
-                if (isPhoneValid(ownerPhone))
+                try 
                 {
+                    write("Please enter your phone number. Only digits and '-' are allowed");                
+                    vehicle.OwnerPhone =  Console.ReadLine();
                     isValidInput = true;
                 }
-            } while (!isValidInput);
-
-            return ownerPhone;
-        }
-
-        /// <summary>
-        /// Validates phone without using regex
-        /// No complex validation, eg 1, 123-123 are all valid phones
-        /// </summary>
-        /// <param name="i_OwnerPhone">string that represents the phone number</param>
-        /// <returns></returns>
-        private bool isPhoneValid(string i_OwnerPhone)
-        {
-            bool isValid = true;
-            char[] ownerPhoneAsCharArray = i_OwnerPhone.ToCharArray();
-            if (i_OwnerPhone.Trim().Replace("-", "").Length == 0)
-            {
-                isValid = false;
-            }
-            else
-            {
-                for (int i = 0; i < i_OwnerPhone.Length; i++)
+                catch (FormatException exception)
                 {
-                    if (!Char.IsDigit(ownerPhoneAsCharArray[i])
-                        && ownerPhoneAsCharArray[i] != '-')
-                    {
-                        isValid = false;
-                        break;
-                    }
+                    write(exception.Message);
                 }
-            }
-
-
-            return isValid;
+            } while (!isValidInput);
         }
+
+      
 
         private string getLicenceNumberFromUser()
         {
