@@ -95,27 +95,44 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         private void charge()
         {
             string licenseNumber = getLicenceNumberFromUser();
-            float chargeAmount = getChargeAmountFromUser();
+            float chargeMinutes = getChargeMinutesFromUser();
 
             Vehicle electricVehicle = null;
+            if (m_Garage.GetFuelVehicles.TryGetValue(licenseNumber, out electricVehicle))
+            {
+                write("Cannot charge fuel vehicle.");
+                return;
+            }
             if (m_Garage.GetElectricVehicles.TryGetValue(licenseNumber, out electricVehicle))
             {
-                m_Garage.Charge(electricVehicle, chargeAmount);
+                try
+                {
+                    m_Garage.Charge(electricVehicle, chargeMinutes/60);
+                    write("Vehicle was successfully charged!");
+                }
+                catch (ArgumentException argumentException)
+                {
+                    write(argumentException.Message);
+                }
+                catch (ValueOutOfRangeException valueOutOfRangeException)
+                {
+                    write(valueOutOfRangeException.Message);
+                }
             }
             else
             {
-                write("No fuel vehicle listed for license number " + licenseNumber);
+                write("No electric vehicle listed for license number " + licenseNumber);
             }
         }
 
-        private float getChargeAmountFromUser()
+        private float getChargeMinutesFromUser()
         {
             bool isGoodInput = false;
             float chargeAmount = 0;
 
             do
             {
-                write("Please enter the amount of charge:");
+                write("Please enter the amount of minutes to charge:");
 
                 string optionAsString = Console.ReadLine();
 
@@ -144,6 +161,11 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             float fuelAmount = getFuelAmountFromUser();
 
             Vehicle fuelVehicle = null;
+            if (m_Garage.GetElectricVehicles.TryGetValue(licenseNumber, out fuelVehicle))
+            {
+                write("Cannot put fuel in an electric vehicle");
+                return;
+            }
             if (m_Garage.GetFuelVehicles.TryGetValue(licenseNumber, out fuelVehicle))
             {
                 try
@@ -153,8 +175,12 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 }
                 catch (ArgumentException argumentException)
                 {
-                    write(argumentException.ToString());
-                }                
+                    write(argumentException.Message);
+                }
+                catch (ValueOutOfRangeException valueOutOfRangeException)
+                {
+                    write(valueOutOfRangeException.Message);
+                }
             }
             else
             {
