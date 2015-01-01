@@ -639,7 +639,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 for (int i = 0; i < i_OwnerPhone.Length; i++)
                 {
                     if (!Char.IsDigit(ownerPhoneAsCharArray[i])
-                        && ownerPhoneAsCharArray[i] != '=')
+                        && ownerPhoneAsCharArray[i] != '-')
                     {
                         isValid = false;
                         break;
