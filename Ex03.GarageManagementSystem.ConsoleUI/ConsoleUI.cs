@@ -32,14 +32,6 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             m_Garage = new GarageLogic.Garage();
             m_VehicleBuilder = new VehicleBuilder();
 
-            //DEBUG START
-
-            Vehicle v1 = m_VehicleBuilder.buildVehicle(VehicleBuilder.eVehicleType.FuelCar);
-            v1.LicenseNum = "123";
-
-            m_Garage.AddVehicle(v1);
-            //DEBUG END
-
             Run();
         }
 
