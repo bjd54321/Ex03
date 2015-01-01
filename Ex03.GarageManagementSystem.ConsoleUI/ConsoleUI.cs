@@ -180,7 +180,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 catch (ValueOutOfRangeException valueOutOfRangeException)
                 {
                     write(valueOutOfRangeException.Message);
-                }
+                }                
             }
             else
             {
@@ -498,22 +498,43 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                     {
                         property.SetValue(io_Vehicle, getEnumFromUser(property.PropertyType), null);
                     }
-                    else if (property.PropertyType == typeof(string))
+                    else if (property.PropertyType == typeof(float))
                     {
                         property.SetValue(io_Vehicle, getFloatFromUser(), null);
+                    }
+                    else if (property.PropertyType == typeof(int))
+                    {
+                        property.SetValue(io_Vehicle, getIntFromUser(), null);
                     }
                 }
             }
         }
 
-        private object getFloatFromUser()
+
+        private int getIntFromUser()
+        {
+            bool isValid = false;
+            int answer;
+
+            do
+            {
+                if (int.TryParse(Console.ReadLine(), out answer))
+                {
+                    isValid = true;
+                }
+            } while (!isValid);
+
+            return answer;
+        }
+
+
+        private float getFloatFromUser()
         {
             bool isValid = false;
             float answer;
 
             do
             {
-                write("Please enter float: ");
                 if (float.TryParse(Console.ReadLine(), out answer))
                 {
                     isValid = true;
@@ -657,7 +678,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 for (int i = 0; i < i_OwnerPhone.Length; i++)
                 {
                     if (!Char.IsDigit(ownerPhoneAsCharArray[i])
-                        && ownerPhoneAsCharArray[i] != '=')
+                        && ownerPhoneAsCharArray[i] != '-')
                     {
                         isValid = false;
                         break;

@@ -6,7 +6,7 @@ namespace Ex03.GarageLogic
 {
     public abstract class Vehicle
     {
-        protected string m_BrandName;
+        protected string m_ModelName;
         protected string m_LicenseNum;
         protected float m_RemainingEnergyPercentage;
         protected List<Tire> m_Tires = new List<Tire>();
@@ -18,6 +18,12 @@ namespace Ex03.GarageLogic
         protected GenericEnergySystem m_EnergySystem;
 
         
+
+        protected Vehicle()
+        {
+
+        }
+
         public string OwnerName
         {
             get { return m_OwnerName; }
@@ -31,6 +37,14 @@ namespace Ex03.GarageLogic
             get { return m_OwnerPhone; }
             set { m_OwnerPhone = value; }
         }
+
+
+        public string ModelName
+        {
+            get { return m_ModelName; }
+            set { m_ModelName = value; }
+        }
+        
         
 
         protected class Tire
@@ -210,9 +224,19 @@ namespace Ex03.GarageLogic
 
         public void InitTires(string i_BrandName)
         {
+            m_Tires = new List<Tire>();
             for (int i = 0; i < m_NumOfTires; i++)
             {
                 m_Tires.Add(new Tire(28, i_BrandName));
+            }
+        }
+
+        public void InitTires(string i_BrandName, int i_MaxAirPressure)
+        {
+            m_Tires = new List<Tire>();
+            for (int i = 0; i < m_NumOfTires; i++)
+            {
+                m_Tires.Add(new Tire(i_MaxAirPressure, i_BrandName));
             }
         }
 
@@ -237,7 +261,7 @@ namespace Ex03.GarageLogic
         public virtual string Print()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("Brand name: ").Append(m_BrandName).Append(Environment.NewLine).
+            sb.Append("Model name: ").Append(m_ModelName).Append(Environment.NewLine).
                Append("License numbers: ").Append(m_LicenseNum).Append(Environment.NewLine).
                Append("Owner name: ").Append(m_OwnerName).Append(Environment.NewLine).
                Append("Owner phone: ").Append(m_OwnerPhone).Append(Environment.NewLine).

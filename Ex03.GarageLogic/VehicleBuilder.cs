@@ -22,10 +22,10 @@ namespace Ex03.GarageLogic
                     vehicle = new Car(eTypeOfEnergy.Electric, 2.6f, "");
                     break;
                 case eVehicleType.FuelMotorcicle:
-                    vehicle = new Motorcicle(eTypeOfEnergy.Fuel);
+                    vehicle = new Motorcicle(eFuelType.Octan96, 6.5f, 30);
                     break;
                 case eVehicleType.ElectricMotorcicle:
-                    vehicle = new Motorcicle(eTypeOfEnergy.Electric);
+                    vehicle = new Motorcicle(eTypeOfEnergy.Electric, 1.8f, 30);
                     break;
                 case eVehicleType.Truck:
                     vehicle = new Truck();
