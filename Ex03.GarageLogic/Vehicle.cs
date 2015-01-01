@@ -18,6 +18,12 @@ namespace Ex03.GarageLogic
         protected GenericEnergySystem m_EnergySystem;
 
         
+
+        protected Vehicle()
+        {
+
+        }
+
         public string OwnerName
         {
             get { return m_OwnerName; }
@@ -222,6 +228,15 @@ namespace Ex03.GarageLogic
             for (int i = 0; i < m_NumOfTires; i++)
             {
                 m_Tires.Add(new Tire(28, i_BrandName));
+            }
+        }
+
+        public void InitTires(string i_BrandName, int i_MaxAirPressure)
+        {
+            m_Tires = new List<Tire>();
+            for (int i = 0; i < m_NumOfTires; i++)
+            {
+                m_Tires.Add(new Tire(i_MaxAirPressure, i_BrandName));
             }
         }
 
