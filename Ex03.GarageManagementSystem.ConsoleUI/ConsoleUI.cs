@@ -480,7 +480,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                     {
                         property.SetValue(io_Vehicle, getEnumFromUser(property.PropertyType), null);
                     }
-                    else if (property.PropertyType == typeof(string))
+                    else if (property.PropertyType == typeof(float))
                     {
                         property.SetValue(io_Vehicle, getFloatFromUser(), null);
                     }
@@ -495,7 +495,6 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
             do
             {
-                write("Please enter float: ");
                 if (float.TryParse(Console.ReadLine(), out answer))
                 {
                     isValid = true;
