@@ -36,6 +36,35 @@ namespace Ex03.GarageLogic
             get { return m_NumOfTires; }
         }
         
+        public float RemainingEnergy
+        {
+            get
+            {
+                if (m_EnergySystem is FuelSystem)
+                {
+                    return (m_EnergySystem as FuelSystem).CurrFuelQuantity;
+                }
+                else if (m_EnergySystem is ElectricSystem)
+                {
+                    return (m_EnergySystem as ElectricSystem).RemainingBatteryTime;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            set
+            {
+                if (m_EnergySystem is FuelSystem)
+                {
+                    (m_EnergySystem as FuelSystem).CurrFuelQuantity = value;
+                }
+                else if (m_EnergySystem is ElectricSystem)
+                {
+                    (m_EnergySystem as ElectricSystem).RemainingBatteryTime = value;
+                }
+            }
+        }
 
 
         public string OwnerPhone
@@ -134,7 +163,22 @@ namespace Ex03.GarageLogic
             private float m_CurrFuelQuantity;
             private readonly float r_FuelTankVolume;
 
-      
+            
+            public float CurrFuelQuantity
+            {
+                get { return m_CurrFuelQuantity; }
+                set 
+                {
+                    if (value > r_FuelTankVolume)
+                    {
+                        throw new ValueOutOfRangeException(value + " is greater than max fuel tank volume: " + r_FuelTankVolume);
+                    }
+                    else
+                    {
+                        m_CurrFuelQuantity = value; 
+                    }                    
+                }
+            }                 
 
             public FuelSystem(float i_FuelTankVolume, eFuelType i_FuelType)
             {
@@ -175,6 +219,24 @@ namespace Ex03.GarageLogic
         {
             private float m_RemainingBatteryTime;
             private readonly float r_MaxBatteryTime;
+
+            
+            public float RemainingBatteryTime
+            {
+                get { return m_RemainingBatteryTime; }
+                set 
+                {
+                    if (value > r_MaxBatteryTime)
+                    {
+                        throw new ValueOutOfRangeException(value + " is great than max battery time: " + r_MaxBatteryTime);
+                    }
+                    else
+                    {
+                        m_RemainingBatteryTime = value; 
+                    }                    
+                }
+            }
+            
 
             public ElectricSystem(float i_MaxBatteryTime)
             {
