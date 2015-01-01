@@ -490,32 +490,45 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         /// <param name="io_Vehicle"></param>
         private void getAdditionalDetails(Vehicle io_Vehicle)
         {
-            foreach (PropertyInfo property in io_Vehicle.GetType().GetProperties()) 
+            PropertyInfo[] properties = io_Vehicle.GetType().GetProperties();
+            int receivedPropertiesCount = 0;
+
+            // If setting of any property fails, we will repeatedly try to get it
+            while (receivedPropertiesCount < properties.Length) 
             {
-                if (!isKnownProperty(property.Name) && property.CanWrite)
+                PropertyInfo property = properties[receivedPropertiesCount];
+                try
                 {
-                    write("Please enter " + property.Name);
-                    if (property.PropertyType == typeof(string))
+                    if (!isKnownProperty(property.Name) && property.CanWrite)
                     {
-                        property.SetValue(io_Vehicle, getStringFromUser(), null);
+                        write("Please enter " + property.Name);
+                        if (property.PropertyType == typeof(string))
+                        {
+                            property.SetValue(io_Vehicle, getStringFromUser(), null);
+                        }
+                        else if (property.PropertyType == typeof(bool))
+                        {
+                            property.SetValue(io_Vehicle, getBooleanFromUser(), null);
+                        }
+                        else if (property.PropertyType.IsEnum)
+                        {
+                            property.SetValue(io_Vehicle, getEnumFromUser(property.PropertyType), null);
+                        }
+                        else if (property.PropertyType == typeof(float))
+                        {
+                            property.SetValue(io_Vehicle, getFloatFromUser(), null);
+                        }
+                        else if (property.PropertyType == typeof(int))
+                        {
+                            property.SetValue(io_Vehicle, getIntFromUser(), null);
+                        }
                     }
-                    else if (property.PropertyType == typeof(bool))
-                    {
-                        property.SetValue(io_Vehicle, getBooleanFromUser(), null);
-                    }
-                    else if (property.PropertyType.IsEnum)
-                    {
-                        property.SetValue(io_Vehicle, getEnumFromUser(property.PropertyType), null);
-                    }
-                    else if (property.PropertyType == typeof(float))
-                    {
-                        property.SetValue(io_Vehicle, getFloatFromUser(), null);
-                    }
-                    else if (property.PropertyType == typeof(int))
-                    {
-                        property.SetValue(io_Vehicle, getIntFromUser(), null);
-                    }
+                    receivedPropertiesCount++;
                 }
+                catch (TargetInvocationException targetException)
+                {
+                    write(targetException.InnerException.Message);
+                }               
             }
         }
 
