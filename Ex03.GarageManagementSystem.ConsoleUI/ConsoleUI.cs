@@ -100,7 +100,15 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             Vehicle electricVehicle = null;
             if (m_Garage.GetElectricVehicles.TryGetValue(licenseNumber, out electricVehicle))
             {
-                m_Garage.Charge(electricVehicle, chargeAmount);
+                try
+                {
+                    m_Garage.Charge(electricVehicle, chargeAmount);
+                }
+                catch (ValueOutOfRangeException outOfRangeException)
+                {
+                    write(outOfRangeException.ToString());
+                }
+                
             }
             else
             {
