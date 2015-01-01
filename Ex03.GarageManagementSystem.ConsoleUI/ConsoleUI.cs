@@ -484,11 +484,33 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                     {
                         property.SetValue(io_Vehicle, getFloatFromUser(), null);
                     }
+                    else if (property.PropertyType == typeof(int))
+                    {
+                        property.SetValue(io_Vehicle, getIntFromUser(), null);
+                    }
                 }
             }
         }
 
-        private object getFloatFromUser()
+
+        private int getIntFromUser()
+        {
+            bool isValid = false;
+            int answer;
+
+            do
+            {
+                if (int.TryParse(Console.ReadLine(), out answer))
+                {
+                    isValid = true;
+                }
+            } while (!isValid);
+
+            return answer;
+        }
+
+
+        private float getFloatFromUser()
         {
             bool isValid = false;
             float answer;
