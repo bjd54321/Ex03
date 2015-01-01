@@ -15,13 +15,10 @@ namespace Ex03.GarageLogic
         protected string m_OwnerPhone;
         protected eVehicleStatus m_VehicleStatus = eVehicleStatus.InReparation;
         protected eTypeOfEnergy r_TypeOfEnergy;
-        protected GenericEnergySystem m_EnergySystem;
-
-        
+        protected GenericEnergySystem m_EnergySystem;        
 
         protected Vehicle()
         {
-
         }
 
         public string OwnerName
@@ -30,7 +27,6 @@ namespace Ex03.GarageLogic
             set { m_OwnerName = value; }
         }
 
-        
         public int NumOfTires
         {
             get { return m_NumOfTires; }
@@ -53,6 +49,7 @@ namespace Ex03.GarageLogic
                     return 0;
                 }
             }
+            
             set
             {
                 if (m_EnergySystem is FuelSystem)
@@ -65,7 +62,6 @@ namespace Ex03.GarageLogic
                 }
             }
         }
-
 
         public string OwnerPhone
         {
@@ -93,7 +89,7 @@ namespace Ex03.GarageLogic
         {
             bool isValid = true;
             char[] ownerPhoneAsCharArray = i_OwnerPhone.ToCharArray();
-            if (i_OwnerPhone.Trim().Replace("-", "").Length == 0)
+            if (i_OwnerPhone.Trim().Replace("-", string.Empty).Length == 0)
             {
                 isValid = false;
             }
@@ -101,7 +97,7 @@ namespace Ex03.GarageLogic
             {
                 for (int i = 0; i < i_OwnerPhone.Length; i++)
                 {
-                    if (!Char.IsDigit(ownerPhoneAsCharArray[i])
+                    if (!char.IsDigit(ownerPhoneAsCharArray[i])
                         && ownerPhoneAsCharArray[i] != '-')
                     {
                         isValid = false;
@@ -110,24 +106,20 @@ namespace Ex03.GarageLogic
                 }
             }
 
-
             return isValid;
         }
-
 
         public string ModelName
         {
             get { return m_ModelName; }
             set { m_ModelName = value; }
         }
-        
-        
-
+      
         protected class Tire
         {
+            private readonly float r_MaxAirPressure;
             private string m_BrandName;
             private float m_AirPressure;
-            private readonly float r_MaxAirPressure;
 
             public Tire(float i_MaxAirPressure, string i_TireBrandName)
             {
@@ -175,7 +167,7 @@ namespace Ex03.GarageLogic
                 }
                 else
                 {
-                    throw new ValueOutOfRangeException(0,r_MaxAirPressure);
+                    throw new ValueOutOfRangeException(0, r_MaxAirPressure);
                 }                
             }
 
@@ -186,8 +178,7 @@ namespace Ex03.GarageLogic
             public string Print()
             {
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append("Air pressure: ").Append(m_AirPressure).
-                              Append(" Brand name: ").Append(m_BrandName).Append(Environment.NewLine);
+                stringBuilder.Append("Air pressure: ").Append(m_AirPressure).Append(" Brand name: ").Append(m_BrandName).Append(Environment.NewLine);
 
                 return stringBuilder.ToString();
             }
@@ -200,11 +191,10 @@ namespace Ex03.GarageLogic
 
         public class FuelSystem : GenericEnergySystem
         {
+            private readonly float r_FuelTankVolume;
             private eFuelType m_FuelType;
             private float m_CurrFuelQuantity;
-            private readonly float r_FuelTankVolume;
 
-            
             public float CurrFuelQuantity
             {
                 get { return m_CurrFuelQuantity; }
@@ -231,9 +221,9 @@ namespace Ex03.GarageLogic
             {
                 if(i_FuelTypeToAdd != m_FuelType)
                 {
-                    throw new ArgumentException(String.Format("Fuel {0} is not compatible with this vehicle, it uses {1}",
-                        i_FuelTypeToAdd, m_FuelType));
+                    throw new ArgumentException(string.Format("Fuel {0} is not compatible with this vehicle, it uses {1}", i_FuelTypeToAdd, m_FuelType));
                 }
+
                 if (m_CurrFuelQuantity + i_FuelLitersToAdd <= r_FuelTankVolume)
                 {
                     m_CurrFuelQuantity += i_FuelLitersToAdd;
@@ -258,9 +248,8 @@ namespace Ex03.GarageLogic
 
         public class ElectricSystem : GenericEnergySystem
         {
-            private float m_RemainingBatteryTime;
             private readonly float r_MaxBatteryTime;
-
+            private float m_RemainingBatteryTime;
             
             public float RemainingBatteryTime
             {
@@ -278,7 +267,6 @@ namespace Ex03.GarageLogic
                 }
             }
             
-
             public ElectricSystem(float i_MaxBatteryTime)
             {
                 r_MaxBatteryTime = i_MaxBatteryTime;
@@ -294,7 +282,7 @@ namespace Ex03.GarageLogic
                 {
                     StringBuilder sb = new StringBuilder("Cannot charge more than ");
                     sb.Append(r_MaxBatteryTime).Append(" hours");
-                    throw new ValueOutOfRangeException(sb.ToString(),0, r_MaxBatteryTime);
+                    throw new ValueOutOfRangeException(sb.ToString(), 0, r_MaxBatteryTime);
                 }
             }
 
@@ -307,8 +295,6 @@ namespace Ex03.GarageLogic
 
                 return sb.ToString();
             }
-
-                
         }
 
         public eVehicleStatus VehicleStatus
@@ -329,10 +315,9 @@ namespace Ex03.GarageLogic
 
         public string LicenseNum
         {
-            get {return m_LicenseNum;}
+            get { return m_LicenseNum; }
             set { m_LicenseNum = value; }
         }
-
 
         public void InflateTires()
         {
@@ -341,8 +326,6 @@ namespace Ex03.GarageLogic
                 tire.Inflate(tire.MaxAirPressure - tire.AirPressure);
             }
         }
-
-
 
         public void InitTires(string i_BrandName, int i_MaxAirPressure)
         {
@@ -368,19 +351,14 @@ namespace Ex03.GarageLogic
             {
                 stringBuilder.Append(tire.Print());
             }
+
             return stringBuilder.ToString();
         }
 
         public virtual string Print()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("Model name: ").Append(m_ModelName).Append(Environment.NewLine).
-               Append("License numbers: ").Append(m_LicenseNum).Append(Environment.NewLine).
-               Append("Owner name: ").Append(m_OwnerName).Append(Environment.NewLine).
-               Append("Owner phone: ").Append(m_OwnerPhone).Append(Environment.NewLine).
-               Append("Status: ").Append(m_VehicleStatus).Append(Environment.NewLine).
-               Append("Tires: ").Append(Environment.NewLine).Append(GetTireDetails()).Append(Environment.NewLine).
-               Append("Engine: ").Append(Environment.NewLine).Append(m_EnergySystem.Print()).Append(Environment.NewLine); 
+            sb.Append("Model name: ").Append(m_ModelName).Append(Environment.NewLine).Append("License numbers: ").Append(m_LicenseNum).Append(Environment.NewLine).Append("Owner name: ").Append(m_OwnerName).Append(Environment.NewLine).Append("Owner phone: ").Append(m_OwnerPhone).Append(Environment.NewLine).Append("Status: ").Append(m_VehicleStatus).Append(Environment.NewLine).Append("Tires: ").Append(Environment.NewLine).Append(GetTireDetails()).Append(Environment.NewLine).Append("Engine: ").Append(Environment.NewLine).Append(m_EnergySystem.Print()).Append(Environment.NewLine);
         
             return sb.ToString();
         }

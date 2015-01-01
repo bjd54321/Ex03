@@ -4,13 +4,11 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    class Truck : Vehicle
+    public class Truck : Vehicle
     {
         private bool m_CarriesDangerousMaterials;
         private float m_MaxCarryWeight;
         private float m_CarryWeight;
-
-
 
         public bool CarriesDangerousMaterials
         {
@@ -18,13 +16,11 @@ namespace Ex03.GarageLogic
             set { m_CarriesDangerousMaterials = value; }
         }
 
-
         public float CarryWeight
         {
             get { return m_CarryWeight; }
             set { m_CarryWeight = value; }
         }
-
 
         public float MaxCarryWeight
         {
@@ -33,7 +29,7 @@ namespace Ex03.GarageLogic
             { 
                 if (value < m_CarryWeight)
                 {
-                    throw new ValueOutOfRangeException(String.Format("Your truck already carries {0} tonn", m_CarryWeight));
+                    throw new ValueOutOfRangeException(string.Format("Your truck already carries {0} tonn", m_CarryWeight));
                 }
                 else
                 {
@@ -42,14 +38,12 @@ namespace Ex03.GarageLogic
             }
         }
 
-
-
         public Truck() 
         {          
             m_NumOfTires = 8;
             m_EnergySystem = new FuelSystem(200, eFuelType.Soler);
             r_TypeOfEnergy = eTypeOfEnergy.Fuel;
-            InitTires("", 24);
+            InitTires(string.Empty, 24);
         }
 
         public override string Print()

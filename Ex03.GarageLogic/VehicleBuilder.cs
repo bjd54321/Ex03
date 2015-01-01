@@ -9,17 +9,16 @@ namespace Ex03.GarageLogic
     /// </summary>
     public class VehicleBuilder
     {
-     
         public Vehicle buildVehicle(eVehicleType i_TypeOfVehicle)
         {
             Vehicle vehicle = null;
             switch (i_TypeOfVehicle)
             {
                 case eVehicleType.FuelCar:
-                    vehicle = new Car(eFuelType.Octan95, 45, "");
+                    vehicle = new Car(eFuelType.Octan95, 45, string.Empty);
                     break;
                 case eVehicleType.ElectricCar:
-                    vehicle = new Car(eTypeOfEnergy.Electric, 2.6f, "");
+                    vehicle = new Car(eTypeOfEnergy.Electric, 2.6f, string.Empty);
                     break;
                 case eVehicleType.FuelMotorcicle:
                     vehicle = new Motorcicle(eFuelType.Octan96, 6.5f, 30);
@@ -33,6 +32,7 @@ namespace Ex03.GarageLogic
                 default:
                     break;
             }
+
             return vehicle;
         }
 
@@ -47,7 +47,7 @@ namespace Ex03.GarageLogic
 
         internal string[] getVehicleTypesAsStrings()
         {
-            List<String> types = new List<String>();
+            List<string> types = new List<string>();
             types.Add("Fuel car");
             types.Add("Electric car");
             types.Add("Fuel motorcicle");

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    class Car : Vehicle
+    public class Car : Vehicle
     {
         private eCarColor m_CarColor;
         private eNumOfDoors m_NumOfDoors = eNumOfDoors.Four;
@@ -15,14 +15,12 @@ namespace Ex03.GarageLogic
             set { m_CarColor = value; }
         }
         
-
         public eNumOfDoors NumOfDoors
         {
             get { return m_NumOfDoors; }
             set { m_NumOfDoors = value; }
         }
         
-
         public Car(string i_TireBrandName)
         {
             m_NumOfTires = 4;

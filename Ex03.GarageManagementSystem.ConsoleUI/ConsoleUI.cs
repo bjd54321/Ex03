@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Ex03.GarageLogic;
 using System.Reflection;
+using Ex03.GarageLogic;
 
 namespace Ex03.GarageManagementSystem.ConsoleUI
 {
     public class ConsoleUI
     {
-        private GarageLogic.Garage m_Garage;
-
-        private GarageLogic.VehicleBuilder m_VehicleBuilder;
-
         private const int k_MinMainMenuOption = 1;
-        private const int r_MaxMainMenuOption = 8;
-        
+        private const int k_MaxMainMenuOption = 8;
         private const int k_MinLicenseLength = 1;
         private const int k_MaxLicenseLength = 10;
 
@@ -27,6 +22,10 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         private const int k_MinVehicleStatus = 0;
         private const int k_MaxVehicleStatus = 3;
 
+        private GarageLogic.Garage m_Garage;
+
+        private GarageLogic.VehicleBuilder m_VehicleBuilder;
+
         public ConsoleUI()
         {
             m_Garage = new GarageLogic.Garage();
@@ -36,8 +35,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         }
 
         public void Run()
-        {
-            
+        {            
             eMenuOption menuOption = eMenuOption.Exit;
             do
             {
@@ -46,7 +44,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
                 Console.Clear();
                 performSelectedOption(menuOption);
-            } while(menuOption != eMenuOption.Exit);
+            }
+            while(menuOption != eMenuOption.Exit);
         }
 
         private void performSelectedOption(eMenuOption menuOption)
@@ -95,11 +94,12 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 write("Cannot charge fuel vehicle.");
                 return;
             }
+
             if (m_Garage.GetElectricVehicles.TryGetValue(licenseNumber, out electricVehicle))
             {
                 try
                 {
-                    m_Garage.Charge(electricVehicle, chargeMinutes/60);
+                    m_Garage.Charge(electricVehicle, chargeMinutes / 60);
                     write("Vehicle was successfully charged!");
                 }
                 catch (ArgumentException argumentException)
@@ -136,12 +136,11 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 {
                     isGoodInput = true;
                 }
-
-            } while (!isGoodInput);
+            }
+            while (!isGoodInput);
 
             return chargeAmount;
         }
-
 
         /// <summary>
         /// Allows user to select a vehicle and fuel it
@@ -158,6 +157,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 write("Cannot put fuel in an electric vehicle");
                 return;
             }
+
             if (m_Garage.GetFuelVehicles.TryGetValue(licenseNumber, out fuelVehicle))
             {
                 try
@@ -203,8 +203,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 {
                     isGoodInput = true;
                 }
-
-            } while (!isGoodInput);
+            }
+            while (!isGoodInput);
 
             return fuelAmount;
         }
@@ -215,7 +215,6 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         /// <returns>Valid fuel type</returns>
         private eFuelType getFuelTypeFromUser()
         {
-         
             bool isGoodInput = false;
             int option;
 
@@ -234,8 +233,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 {
                     isGoodInput = true;
                 }
-
-            } while (!isGoodInput);
+            }
+            while (!isGoodInput);
 
             return (eFuelType)option;
         }
@@ -265,7 +264,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 m_Garage.Inflate(licenceNumber);
                 write("Inflating successful!");
             }
-            catch (NoSuchVehicleException e)
+            catch (NoSuchVehicleException)
             {
                 write("No such vehicle");
             }
@@ -293,9 +292,9 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 else
                 {
                     isGoodInput = true;
-                }
-                
-            } while (!isGoodInput);
+                }   
+            }
+            while (!isGoodInput);
 
             if (option == 0)
             {
@@ -306,7 +305,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
             else
             {
-                write(String.Format("Listing vehicles in status {0}:", Enum.GetName(typeof(eVehicleStatus), option)));
+                write(string.Format("Listing vehicles in status {0}:", Enum.GetName(typeof(eVehicleStatus), option)));
                 printVehicleLicensesByStatus(m_Garage.GetFuelVehicles, (eVehicleStatus)option);
                 printVehicleLicensesByStatus(m_Garage.GetElectricVehicles, (eVehicleStatus)option);
             }
@@ -328,7 +327,6 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             foreach (eVehicleStatus type in types)
             {
                 Console.WriteLine("{0}. {1}", (int)type, Enum.GetName(typeof(eVehicleStatus), type));
-                
             }           
         }
 
@@ -402,7 +400,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             }
             else
             {
-                write(String.Format("No such vehicle in the garage: {0}", licenseNumber));
+                write(string.Format("No such vehicle in the garage: {0}", licenseNumber));
             }
         }
 
@@ -424,7 +422,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 {
                     isGoodInput = true;
                 }
-            } while (!isGoodInput);
+            }
+            while (!isGoodInput);
 
             return (eVehicleStatus)status;
         }
@@ -434,13 +433,12 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         /// </summary>
         private void enterVehicle()
         {
-
             string licenseNumber = getLicenceNumberFromUser();
             Vehicle vehicle = m_Garage.GetVehicle(licenseNumber);
 
-            // No such vehicle, add it
             if (vehicle == null)
             {
+                // No such vehicle, add it
                 VehicleBuilder.eVehicleType typeOfVehicle = getVehicleTypeFromUser();
                 vehicle = m_VehicleBuilder.buildVehicle(typeOfVehicle);
                 vehicle.LicenseNum = licenseNumber;
@@ -452,11 +450,11 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 
                 write("Vehicle was successfuly added!");
             }
-            // Already exist, change status
             else
             {
+                // Already exist, change status
                 m_Garage.ChangeStatus(vehicle, eVehicleStatus.InReparation);
-                write(String.Format("Vehicle status changed to {0}", eVehicleStatus.InReparation));
+                write(string.Format("Vehicle status changed to {0}", eVehicleStatus.InReparation));
             }
         }
 
@@ -469,7 +467,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
             // If the value user entered is invalid, will repeat
             while (tiresCount < vehicle.NumOfTires)
             {
-                Console.WriteLine("Please enter air pressure in tire {0}", (tiresCount + 1));
+                Console.WriteLine("Please enter air pressure in tire {0}", tiresCount + 1);
                 try
                 {
                     vehicle.SetTirePressure(tiresCount, getFloatFromUser());
@@ -478,9 +476,9 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 catch (ValueOutOfRangeException rangeException)
                 {
                     write(rangeException.Message);
-                }
-                
+                }   
             }
+
             vehicle.SetTiresBrand(brandName);
         }
 
@@ -523,6 +521,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                             property.SetValue(io_Vehicle, getIntFromUser(), null);
                         }
                     }
+
                     receivedPropertiesCount++;
                 }
                 catch (TargetInvocationException targetException)
@@ -531,7 +530,6 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 }               
             }
         }
-
 
         private int getIntFromUser()
         {
@@ -548,11 +546,11 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 {
                     write("Invalid input. It must be an integer.");
                 }
-            } while (!isValid);
+            }
+            while (!isValid);
 
             return answer;
         }
-
 
         private float getFloatFromUser()
         {
@@ -569,7 +567,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 {
                     write("Invalid input. It must be a float.");
                 }
-            } while (!isValid);
+            }
+            while (!isValid);
 
             return answer;
         }
@@ -590,7 +589,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 {
                     isValid = true;
                 }
-            } while (!isValid);
+            }
+            while (!isValid);
 
             return answer;
         }
@@ -604,7 +604,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         {
             bool isValidInput = false;
             Array types = Enum.GetValues(i_Type);
-            string option = "";
+            string option = string.Empty;
             int optionAsInt;
 
             foreach (eFuelType type in types)
@@ -620,8 +620,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 {
                     isValidInput = true;
                 }
-
-            } while (!isValidInput);
+            }
+            while (!isValidInput);
 
             return (int)Enum.Parse(i_Type, option);
         }
@@ -638,12 +638,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         /// <returns></returns>
         private bool isKnownProperty(string p)
         {
-            List<string> knownProperties = new List<string>() { "OwnerName",
-                                                                "OwnerPhone",
-                                                                "VehicleStatus",
-                                                                "NumOfDoors",
-                                                                "TypeOfEnergy",
-                                                                "LicenseNum"};
+            List<string> knownProperties = new List<string>() { "OwnerName", "OwnerPhone", "VehicleStatus", "NumOfDoors", "TypeOfEnergy", "LicenseNum" };
 
             return knownProperties.Contains(p);
         }
@@ -656,7 +651,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         private string getOwnerNameFromUser()
         {
             bool isValidInput = false;
-            string ownerName = "";
+            string ownerName = string.Empty;
 
             do
             {
@@ -666,7 +661,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 {
                     isValidInput = true;
                 }
-            } while (!isValidInput);
+            }
+            while (!isValidInput);
 
             return ownerName;
         }
@@ -680,22 +676,21 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 try 
                 {
                     write("Please enter your phone number. Only digits and '-' are allowed");                
-                    vehicle.OwnerPhone =  Console.ReadLine();
+                    vehicle.OwnerPhone = Console.ReadLine();
                     isValidInput = true;
                 }
                 catch (FormatException exception)
                 {
                     write(exception.Message);
                 }
-            } while (!isValidInput);
+            }
+            while (!isValidInput);
         }
-
-      
 
         private string getLicenceNumberFromUser()
         {
             bool isGoodInput = false;
-            string licenseNumber = "";
+            string licenseNumber = string.Empty;
 
             write("Please enter vehicle license number:");
             do
@@ -707,9 +702,10 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 }
                 else
                 {
-                    write(String.Format("License number must be at least {0} characters long", k_MinLicenseLength)); 
+                    write(string.Format("License number must be at least {0} characters long", k_MinLicenseLength)); 
                 }
-            } while (!isGoodInput);
+            }
+            while (!isGoodInput);
 
             return licenseNumber;
         }
@@ -736,7 +732,8 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
                 {
                     isGoodInput = true;
                 }
-            } while (!isGoodInput);
+            }
+            while (!isGoodInput);
 
             return (VehicleBuilder.eVehicleType)vehicleType;
         }
@@ -759,7 +756,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         private void printMainMenuOptions()
         {
             Console.WriteLine("Please choose action:" + Environment.NewLine);
-            for (int i = 1; i <= r_MaxMainMenuOption; i++)
+            for (int i = 1; i <= k_MaxMainMenuOption; i++)
             {
                 printMenuOption((eMenuOption)i);
             }            
@@ -773,10 +770,10 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
 
             do
             {
-                System.Console.WriteLine("Please enter desired option ({0}-{1}):", k_MinMainMenuOption, r_MaxMainMenuOption);
+                System.Console.WriteLine("Please enter desired option ({0}-{1}):", k_MinMainMenuOption, k_MaxMainMenuOption);
                 string inputText = System.Console.ReadLine();
                 numberIsInt = int.TryParse(inputText, out menuOption);
-                if (!numberIsInt || menuOption < k_MinMainMenuOption || menuOption > r_MaxMainMenuOption)
+                if (!numberIsInt || menuOption < k_MinMainMenuOption || menuOption > k_MaxMainMenuOption)
                 {
                     System.Console.WriteLine("The input you entered is invalid.");
                 }

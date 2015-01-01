@@ -50,7 +50,6 @@
     <Compile Include="Vehicle.cs" />
     <Compile Include="VehicleBuilder.cs" />
     <Compile Include="VehicleStatus.cs" />
-    <Compile Include="VehicleType.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -7,9 +7,9 @@ namespace Ex03.GarageLogic
     public class Garage
     {
         // Key is licence number in both 
-        Dictionary<string, Vehicle> m_FuelVehicles;
-        Dictionary<string, Vehicle> m_ElectricVehicles;
-        VehicleBuilder m_VehicleBuilder;
+        private Dictionary<string, Vehicle> m_FuelVehicles;
+        private Dictionary<string, Vehicle> m_ElectricVehicles;
+        private VehicleBuilder m_VehicleBuilder;
 
         public Garage()
         {
