@@ -454,6 +454,23 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         {            
             write("Please enter the brand of tires");
             string brandName = getStringFromUser();
+            int tiresCount = 0;
+
+            // If the value user entered is invalid, will repeat
+            while (tiresCount < vehicle.NumOfTires)
+            {
+                Console.WriteLine("Please enter air pressure in tire {0}", (tiresCount + 1));
+                try
+                {
+                    vehicle.SetTirePressure(tiresCount, getIntFromUser());
+                    tiresCount++;
+                }
+                catch (ValueOutOfRangeException rangeException)
+                {
+                    write(rangeException.Message);
+                }
+                
+            }
             vehicle.InitTires(brandName);
         }
 
@@ -465,7 +482,7 @@ namespace Ex03.GarageManagementSystem.ConsoleUI
         {
             foreach (PropertyInfo property in io_Vehicle.GetType().GetProperties()) 
             {
-                if (!isKnownProperty(property.Name))
+                if (!isKnownProperty(property.Name) && property.CanWrite)
                 {
                     write("Please enter " + property.Name);
                     if (property.PropertyType == typeof(string))
